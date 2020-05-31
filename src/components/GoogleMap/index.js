@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {GoogleMap, InfoWindow, Marker, withGoogleMap, withScriptjs} from "react-google-maps"
+import {GoogleMap,Circle, InfoWindow, Marker, withGoogleMap, withScriptjs} from "react-google-maps"
 import * as _ from 'lodash'
 import {Link} from 'react-router-dom'
 import {MAP_CENTER, PLACE_API_KEY} from "../../utilities/Constants";
@@ -50,7 +50,7 @@ class CustomMarker extends Component {
 
 
 const MyMapComponent = withScriptjs(withGoogleMap((props) => {
-		const {dataList = []} = props || {}
+		const {dataList = [],mapCenter,radius} = props || {}
 		return <GoogleMap
 			defaultZoom={ 15 }
 			ref={ (ref) => props.getMapRef(ref) }
@@ -63,6 +63,14 @@ const MyMapComponent = withScriptjs(withGoogleMap((props) => {
 					/>
 				})
 			}
+			<Circle
+				center={{
+					lat: parseFloat(mapCenter.lat),
+					lng: parseFloat(mapCenter.lng)
+				}}
+				radius={radius}
+				options={{strokeColor: "#ff0000"}}
+			/>
 		</GoogleMap>
 	}
 ));

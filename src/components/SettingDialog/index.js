@@ -11,15 +11,18 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import {BUSINESS_STATUS_LIST, PLACE_TYPES_LIST} from "../../utilities/Constants";
+import Slider from '@material-ui/core/Slider';
+import * as _ from 'lodash'
 
 const AutocompleteSearch = (props) => {
 	const {dataList, label} = props || {}
 	return (
 		<Autocomplete
 			id="combo-box-demo"
+			// value={{title:props.value}}
 			options={ dataList }
 			getOptionLabel={ (option) => option.title }
-			renderInput={ (params) => <TextField { ...params } label={ label } variant="outlined"/> }
+			renderInput={ (params) => <TextField { ...params } label={ label } variant="outlined" /> }
 			onSelect={ (event = {}) => {
 				const {target = {}} = event || {}
 				const {value} = target || {}
@@ -90,13 +93,25 @@ const SettingDialog = (props) => {
 							{ ...props }
 							dataList={ BUSINESS_STATUS_LIST }
 							label={ 'Business Status' }
+							value={props.businessStatus}
 							onSelect={ props.onSelectBusinessStatus }/>
 						<Typography gutterBottom className='mt-3'>Business Type *</Typography>
+						
 						<AutocompleteSearch
 							{ ...props }
 							dataList={ PLACE_TYPES_LIST }
 							label={ 'Business Type' }
+							value={props.businessType}
 							onSelect={ props.onSelectBusinessType }/>
+						
+						<Typography gutterBottom className='mt-4' style={{marginBottom:-5}}>Radius: {props.radius} m</Typography>
+						<Slider
+							value={props.radius}
+							min={0}
+							step={0.1}
+							max={30000}
+							onChange={props.onRadiusChanged}
+						/>
 					</DialogContent>
 					<DialogActions>
 						<Button autoFocus onClick={ props.closeModal} color="primary">
