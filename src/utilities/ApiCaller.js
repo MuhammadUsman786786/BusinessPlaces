@@ -6,8 +6,13 @@ export const searchGoogleMapNearbyPlaces = (props) => {
 	const location = {lat: mapCenter.lat, lng: mapCenter.lng};
 	const map = new google.maps.Map(document.getElementById('map'), {center: location, zoom: 17});
 	const service = new google.maps.places.PlacesService(map);
+	
+	const optionalParams={}
+	if(businessType!=='all'){
+		optionalParams['type']=businessType
+	}
 	service.nearbySearch(
-		{location, radius, type: [ businessType ]},
+		{location, radius, ...optionalParams},
 		function (results, status, pagination) {
 			if (status === 'ZERO_RESULTS') {
 				return toast.info('No result is found')

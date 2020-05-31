@@ -79,7 +79,6 @@ class HomeScreen extends Component {
 	
 	render() {
 		const {isModal, openModal, closeModal} = this.props;
-		console.log(this.state)
 		return (
 			<div className='flex h-100 position-relative'>
 				<CustomMap
