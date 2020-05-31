@@ -1,0 +1,25 @@
+.list-container {
+    margin-right: auto;
+    min-width: 300px;
+    /*width: 100%;*/
+    border-width: 1px;
+    border-color: red;
+}
+
+.location-search-input {
+    align-self: center;
+    font-weight: bold;
+    width: 100%;
+    color: rgb(0, 0, 0);
+    border-radius: 6px;
+    border-color: white;
+    border-width: 0;
+    padding-left: 10px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+}
+
+input {
+    border-width: 1px !important;
+    border-color: black !important;
+}

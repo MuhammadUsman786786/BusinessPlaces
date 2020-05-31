@@ -1,26 +1,24 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {useState} from 'react';
+import LeftDrawer from "./components/LeftDrawer";
+import HomeScreen from "./containers/HomeScreen";
+import {BrowserRouter as Router} from "react-router-dom";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const App=()=> {
+	const [isModal,setModal]=useState(true)
+	const openModal=()=>setModal(true)
+	const closeModal=()=>setModal(false)
+	return (
+		<Router>
+			<div>
+				<div className="wrapper d-flex align-items-stretch">
+					<LeftDrawer isModal={isModal} openModal={openModal} closeModall={closeModal}/>
+					<div id="content">
+						<HomeScreen isModal={isModal} openModal={openModal} closeModal={closeModal}/>
+					</div>
+				</div>
+			</div>
+		</Router>
+	);
 }
 
 export default App;
