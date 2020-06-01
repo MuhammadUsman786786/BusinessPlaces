@@ -3,6 +3,7 @@ import {GoogleMap,Circle, InfoWindow, Marker, withGoogleMap, withScriptjs} from 
 import * as _ from 'lodash'
 import {Link} from 'react-router-dom'
 import {MAP_CENTER, PLACE_API_KEY} from "../../utilities/Constants";
+import {buildImageUrl, generateGoogleMapPlaceLink} from "../../utilities/Transform";
 
 class CustomMarker extends Component {
 	state = {
@@ -22,22 +23,28 @@ class CustomMarker extends Component {
 	render() {
 		const {showInfoWindow,} = this.state;
 		const {item = {}} = this.props
-		const {geometry = {}, vicinity, name, business_status, photos} = item || {}
+		const {geometry = {}, vicinity, name, business_status, photos,place_id} = item || {}
 		const {location,} = geometry || {}
-		let link = _.get(photos, '[0].html_attributions.[0]', '')
-		if (!_.isEmpty(link)) {
-			link = _.split(_.split(link, 'href="')[1], '">')[0]
+		let imageUrl=''
+		
+		if(typeof _.get(photos,'[0].getUrl')==="function"){
+			imageUrl=photos[0].getUrl()
 		}
+
 		return (
-			<Marker position={ location } onClick={ this.handleMouseOver }>
+			<Marker position={ location } onMouseOver={ this.handleMouseOver }>
 				{ showInfoWindow && (
 					<InfoWindow onCloseClick={ this.handleMouseExit }>
 						<div>
-							<img src={ 'https://maps.gstatic.com/mapfiles/place_api/icons/restaurant-71.png' } style={ {width: 20, height: 20} }/>
-							<p className='font-weight-bold mt-2 '>{ name }</p>
-							<p className='font-weight-bold' style={ {marginTop: -8} }>{ vicinity }</p>
-							<p className='font-weight-bold' style={ {marginTop: -8} }>{ business_status }</p>
-							<Link to={ {pathname: link} } target="_blank">
+							<img src={ imageUrl} style={ {
+								width: '220px',
+								height: '100px',
+								objectFit: 'cover'
+							} }/>
+							<p className='font-weight-bold mt-2 ' style={{width:'220px'}}>{ name }</p>
+							<p className='font-weight-bold' style={ {marginTop: -8,width:'220px'} }>{ vicinity }</p>
+							<p className='font-weight-bold' style={ {marginTop: -8,width:'220px'} }>{ business_status }</p>
+							<Link to={ {pathname: generateGoogleMapPlaceLink(place_id)} } target="_blank">
 								<button className='btn btn-sm btn-primary'>Visit ></button>
 							</Link>
 						</div>

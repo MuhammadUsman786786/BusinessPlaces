@@ -37,7 +37,7 @@ class HomeScreen extends Component {
 			mapCenter: MAP_CENTER,
 			businessStatus: '',
 			businessType: '',
-			radius: 200
+			radius: 1500
 		};
 		this.mapRef = null
 	}

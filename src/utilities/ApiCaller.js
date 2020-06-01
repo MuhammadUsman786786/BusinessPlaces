@@ -12,7 +12,6 @@ export const searchGoogleMapNearbyPlaces = (props) => {
 	if (businessType !== 'all') {
 		optionalParams['type'] = [businessType]
 	}
-	console.log(optionalParams)
 	service.nearbySearch(
 		{location, radius, ...optionalParams},
 		function (results, status, pagination) {
@@ -26,7 +25,7 @@ export const searchGoogleMapNearbyPlaces = (props) => {
 			}
 			
 			const filteredResults = _.filter(results, item => item.business_status === businessStatus)
-			console.log(results)
+			
 			if (pagination.hasNextPage) {
 				pagination.nextPage();
 			}
