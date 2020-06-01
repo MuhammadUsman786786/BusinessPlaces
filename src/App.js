@@ -4,7 +4,7 @@ import HomeScreen from "./containers/HomeScreen";
 import {BrowserRouter as Router} from "react-router-dom";
 
 const App=()=> {
-	const [isModal,setModal]=useState(true)
+	const [isModal,setModal]=useState(false)
 	const openModal=()=>setModal(true)
 	const closeModal=()=>setModal(false)
 	return (
