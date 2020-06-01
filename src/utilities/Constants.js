@@ -1,5 +1,6 @@
 export const PLACE_API_KEY = 'AIzaSyBjLKP0pJlrIXLDX1XH205-nb2taTONzHQ'
-export const MAP_CENTER = {lat: 33.5969, lng: 73.0528}
+// export const MAP_CENTER = {lat: 33.5969, lng: 73.0528}
+export const MAP_CENTER = {lat: 35.6961865, lng: 139.7934856}
 
 export const BUSINESS_STATUS_LIST = [
 	{title: 'OPERATIONAL'},
