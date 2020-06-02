@@ -32,7 +32,7 @@ class CustomMarker extends Component {
 		}
 
 		return (
-			<Marker position={ location } onMouseOver={ this.handleMouseOver }>
+			<Marker position={ location } onClick={ this.handleMouseOver }>
 				{ showInfoWindow && (
 					<InfoWindow onCloseClick={ this.handleMouseExit }>
 						<div>
