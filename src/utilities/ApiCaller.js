@@ -11,7 +11,7 @@ export const searchGoogleMapNearbyPlaces = (props) => {
 	
 	console.log({location, radius, type:[businessType]})
 	service.nearbySearch(
-		{location, radius, type:[businessType],keyword:businessType},
+		{location, radius, type:[businessType]},
 		function (results, status, pagination) {
 			if (status === 'ZERO_RESULTS') {
 				showMessage = false

@@ -10,7 +10,6 @@ export const BUSINESS_STATUS_LIST = [
 ]
 
 export const PLACE_TYPES_LIST = [
-	{title: 'all'},
 	{title: 'accounting'},
 	{title: 'airport'},
 	{title: 'amusement_park'},
