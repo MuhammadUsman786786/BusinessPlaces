@@ -8,12 +8,10 @@ export const searchGoogleMapNearbyPlaces = (props) => {
 	const service = new google.maps.places.PlacesService(map);
 	let showMessage = true;
 	
-	const optionalParams = {}
-	if (businessType !== 'all') {
-		optionalParams['type'] = [businessType]
-	}
+	
+	console.log({location, radius, type:[businessType]})
 	service.nearbySearch(
-		{location, radius, ...optionalParams},
+		{location, radius, type:[businessType],keyword:businessType},
 		function (results, status, pagination) {
 			if (status === 'ZERO_RESULTS') {
 				showMessage = false
