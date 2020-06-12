@@ -29,7 +29,7 @@ const styles = ((theme) => ({
 	},
 }));
 
-class HomeScreen extends Component {
+class RealStateScreen extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -92,7 +92,6 @@ class HomeScreen extends Component {
 					dataList={ this.state.dataList }
 					radius={ this.state.radius }
 					mapCenter={ this.state.mapCenter }
-					isCircle
 				/>
 				<div className='position-absolute d-flex justify-content-center'
 				     style={ {right: 0, left: 0, top: 10, zIndex: 999} }>
@@ -122,4 +121,4 @@ class HomeScreen extends Component {
 	}
 }
 
-export default withStyles(styles)(HomeScreen)
+export default withStyles(styles)(RealStateScreen)

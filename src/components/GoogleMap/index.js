@@ -1,8 +1,8 @@
 import React, {Component} from 'react'
-import {GoogleMap,Circle, InfoWindow, Marker, withGoogleMap, withScriptjs} from "react-google-maps"
+import {GoogleMap, Circle, InfoWindow, Marker, withGoogleMap, withScriptjs} from "react-google-maps"
 import * as _ from 'lodash'
 import {Link} from 'react-router-dom'
-import {MAP_CENTER, PLACE_API_KEY} from "../../utilities/Constants";
+import {MAP_CENTER, MAP_CONFIGURATION, PLACE_API_KEY} from "../../utilities/Constants";
 import {buildImageUrl, generateGoogleMapPlaceLink} from "../../utilities/Transform";
 
 class CustomMarker extends Component {
@@ -23,27 +23,27 @@ class CustomMarker extends Component {
 	render() {
 		const {showInfoWindow,} = this.state;
 		const {item = {}} = this.props
-		const {geometry = {}, vicinity, name, business_status, photos,place_id} = item || {}
+		const {geometry = {}, vicinity, name, business_status, photos, place_id} = item || {}
 		const {location,} = geometry || {}
-		let imageUrl=''
+		let imageUrl = ''
 		
-		if(typeof _.get(photos,'[0].getUrl')==="function"){
-			imageUrl=photos[0].getUrl()
+		if (typeof _.get(photos, '[0].getUrl') === "function") {
+			imageUrl = photos[0].getUrl()
 		}
-
+		
 		return (
 			<Marker position={ location } onClick={ this.handleMouseOver }>
 				{ showInfoWindow && (
 					<InfoWindow onCloseClick={ this.handleMouseExit }>
 						<div>
-							<img src={ imageUrl} style={ {
+							<img src={ imageUrl } style={ {
 								width: '220px',
 								height: '100px',
 								objectFit: 'cover'
 							} }/>
-							<p className='font-weight-bold mt-2 ' style={{width:'220px'}}>{ name }</p>
-							<p className='font-weight-bold' style={ {marginTop: -8,width:'220px'} }>{ vicinity }</p>
-							<p className='font-weight-bold' style={ {marginTop: -8,width:'220px'} }>{ business_status }</p>
+							<p className='font-weight-bold mt-2 ' style={ {width: '220px'} }>{ name }</p>
+							<p className='font-weight-bold' style={ {marginTop: -8, width: '220px'} }>{ vicinity }</p>
+							<p className='font-weight-bold' style={ {marginTop: -8, width: '220px'} }>{ business_status }</p>
 							<Link to={ {pathname: generateGoogleMapPlaceLink(place_id)} } target="_blank">
 								<button className='btn btn-sm btn-primary'>Visit ></button>
 							</Link>
@@ -57,10 +57,13 @@ class CustomMarker extends Component {
 
 
 const MyMapComponent = withScriptjs(withGoogleMap((props) => {
-		const {dataList = [],mapCenter,radius} = props || {}
+		const {dataList = [], mapCenter, radius} = props || {}
 		return <GoogleMap
 			defaultZoom={ 15 }
 			ref={ (ref) => props.getMapRef(ref) }
+			options={ {
+				// styles: MAP_CONFIGURATION,
+			} }
 			defaultCenter={ MAP_CENTER }>
 			{
 				_.map(dataList, (item) => {
@@ -70,14 +73,15 @@ const MyMapComponent = withScriptjs(withGoogleMap((props) => {
 					/>
 				})
 			}
+			{ props.isCircle &&
 			<Circle
-				center={{
+				center={ {
 					lat: parseFloat(mapCenter.lat),
 					lng: parseFloat(mapCenter.lng)
-				}}
-				radius={radius}
-				options={{strokeColor: "#ff0000"}}
-			/>
+				} }
+				radius={ radius }
+				options={ {strokeColor: "#ff0000"} }
+			/> }
 		</GoogleMap>
 	}
 ));
@@ -88,7 +92,7 @@ class CustomMap extends Component {
 			<MyMapComponent
 				isMarkerShown
 				{ ...this.props }
-				googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${PLACE_API_KEY}&v=3.exp&libraries=geometry,drawing,places`}
+				googleMapURL={ `https://maps.googleapis.com/maps/api/js?key=${ PLACE_API_KEY }&v=3.exp&libraries=geometry,drawing,places` }
 				loadingElement={ <div style={ {height: `100%`} }/> }
 				containerElement={ <div style={ {height: `100%`} }/> }
 				mapElement={ <div style={ {height: `100%`} }/> }
