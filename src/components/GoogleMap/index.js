@@ -124,8 +124,8 @@ const MyMapComponent = withScriptjs(withGoogleMap((props) => {
 				options={ {strokeColor: "#ff0000"} }
 			/> }
 			<Directions
-				travelMode={ google.maps.TravelMode.DRIVING }
-				places={ props.directionsList }/> }
+				travelMode={ google.maps.TravelMode.WALKING }
+				places={ props.directionsList }/>
 		</GoogleMap>
 	}
 ));

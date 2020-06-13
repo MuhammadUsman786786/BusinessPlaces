@@ -22,6 +22,11 @@ class Directions extends Component {
 		this.handleFetchData(places, travelMode)
 	}
 	
+	// shouldComponentUpdate(nextProps) {
+	// 	console.log({nextProps,props:this.props})
+	// 	return !_.isEqual(this.props, nextProps);
+	// }
+	
 	handleFetchData = (places, travelMode) => {
 		if (_.size(places) < 2) {
 			return

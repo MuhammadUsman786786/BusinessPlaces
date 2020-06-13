@@ -49,3 +49,30 @@ export const searchGoogleMapNearbyPlaces = (props) => new Promise((resolve, reje
 			return resolve(results)
 		});
 });
+
+export const getDirections = (places, successCallBack) =>new Promise((resolve, reject) => {
+	if (_.size(places < 2)) {
+		resolve([])
+	}
+	const waypoints = places.map(p => ({
+		location: {lat: p.lat, lng: p.lng},
+	}));
+	const origin = waypoints.shift().location;
+	const destination = waypoints.pop().location;
+	const directionsService = new google.maps.DirectionsService();
+	directionsService.route(
+		{
+			origin: origin,
+			destination: destination,
+			travelMode: google.maps.TravelMode.WALKING,
+			waypoints: waypoints,
+			optimizeWaypoints: true,
+		},
+		(result, status) => {
+			if (status === google.maps.DirectionsStatus.OK) {
+				return resolve(result)
+			}
+			resolve([])
+		}
+	);
+})

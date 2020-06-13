@@ -107,6 +107,38 @@ class RealStateScreen extends Component {
 		return directionsPointList
 	};
 	
+	renderImages =()=>{
+		const {dataList = [], dataList1 = []} = this.state;
+		const mergedDataList=[...dataList, ...dataList1 ]
+		if(_.isEmpty(mergedDataList)){
+			return <h6 className='pt-3 text-center w-25'>No Place is found</h6>
+		}
+		return <div className='d-flex flex-wrap' style={ {width: '25%', height: '517px', overflow: 'scroll'} }>
+			{ _.map(mergedDataList, (item) => {
+				const {photos} = item || {};
+				// eslint-disable-next-line no-unused-vars
+				let imageUrl = null;
+				if (typeof _.get(photos, '[0].getUrl') === "function") {
+					imageUrl = photos[0].getUrl()
+				}
+				return <div
+					className='image-style'
+					onMouseOver={ () => {
+						this.setState({hoverPlaceId: item.id})
+					} }
+					onMouseLeave={ () => {
+						this.setState({hoverPlaceId: ''})
+					} }
+				>
+					<img
+						style={ {width: '100%', height: '100%', objectFit: 'cover', borderRadius: 4} }
+						src={ imageUrl }/>
+				</div>
+			})
+			}
+		</div>
+	}
+	
 	render() {
 		const {isModal, closeModal} = this.props;
 		const {dataList = [], dataList1 = []} = this.state;
@@ -114,30 +146,7 @@ class RealStateScreen extends Component {
 		return (
 			<div className='flex h-100 position-relative'>
 				<div className='d-flex' style={ {height: '70%'} }>
-					<div className='d-flex flex-wrap' style={ {width: '25%', height: '517px', overflow: 'scroll'} }>
-						{ _.map([ ...dataList, ...dataList1 ], (item) => {
-							const {photos} = item || {};
-							// eslint-disable-next-line no-unused-vars
-							let imageUrl = null;
-							if (typeof _.get(photos, '[0].getUrl') === "function") {
-								imageUrl = photos[0].getUrl()
-							}
-							return <div
-								className='image-style'
-								onMouseOver={ () => {
-									this.setState({hoverPlaceId: item.id})
-								} }
-								onMouseLeave={ () => {
-									this.setState({hoverPlaceId: ''})
-								} }
-							>
-								<img
-									style={ {width: '100%', height: '100%', objectFit: 'cover', borderRadius: 4} }
-									src={ imageUrl }/>
-							</div>
-						})
-						}
-					</div>
+					{this.renderImages()}
 					<div style={ {width: '75%'} }>
 						<CustomMap
 							getMapRef={ (ref) => (this.mapRef = ref) }
