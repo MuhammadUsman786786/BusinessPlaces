@@ -9,10 +9,10 @@ const LeftDrawer = (props) => {
 				<li className="active">
 					<p style={ {cursor: 'pointer'} }
 					   onClick={ () => {
-						   if (currentIndex === 1) {
-							   props.openModal(true)
-						   }
+						   // if (currentIndex === 1) {
 						   setTabIndex(1)
+						   props.openModal(1)
+						   // }
 					   } }>
 						Home
 					</p>
@@ -21,6 +21,7 @@ const LeftDrawer = (props) => {
 					<p style={ {cursor: 'pointer'} }
 					   onClick={ () => {
 						   setTabIndex(2)
+						   props.openModal(2)
 					   } }
 					>
 						About
@@ -30,6 +31,7 @@ const LeftDrawer = (props) => {
 					<p style={ {cursor: 'pointer'} }
 					   onClick={ () => {
 						   setTabIndex(3)
+						   props.openModal(3)
 					   } }
 					>Works</p>
 				</li>

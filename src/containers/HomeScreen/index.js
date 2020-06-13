@@ -1,12 +1,12 @@
 import React, {Component} from 'react'
 import CustomMap from "../../components/GoogleMap";
-import {MAP_CENTER} from "../../utilities/Constants";
+import {API_RESPONSE, MAP_CENTER} from "../../utilities/Constants";
 import {withStyles} from '@material-ui/core/styles';
 import {LocationSearchInput, SettingDialog} from "../../components";
 import {navigateMap} from "../../utilities/MapUtils";
 import {toast} from "react-toastify";
 import * as _ from 'lodash'
-import {searchGoogleMapNearbyPlaces} from "../../utilities/ApiCaller";
+import {searchGoogleMapNearbyPlacesWithPagination} from "../../utilities/ApiCaller";
 
 
 const styles = ((theme) => ({
@@ -33,7 +33,7 @@ class HomeScreen extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			dataList: [],
+			dataList: API_RESPONSE,
 			mapCenter: MAP_CENTER,
 			businessStatus: '',
 			businessType: '',
@@ -64,7 +64,7 @@ class HomeScreen extends Component {
 		}
 		this.setState({dataList: []});
 		closeModal();
-		searchGoogleMapNearbyPlaces({
+		searchGoogleMapNearbyPlacesWithPagination({
 			mapCenter, businessType, businessStatus, radius,
 			successHandler: this.successHandler
 		})
@@ -84,7 +84,8 @@ class HomeScreen extends Component {
 	};
 	
 	render() {
-		const {isModal, openModal, closeModal} = this.props;
+		const {isModal, closeModal} = this.props;
+		console.log(this.state.dataList)
 		return (
 			<div className='flex h-100 position-relative'>
 				<CustomMap
@@ -93,6 +94,7 @@ class HomeScreen extends Component {
 					radius={ this.state.radius }
 					mapCenter={ this.state.mapCenter }
 					isCircle
+					isMarkerInfoWindowAllowed={true}
 				/>
 				<div className='position-absolute d-flex justify-content-center'
 				     style={ {right: 0, left: 0, top: 10, zIndex: 999} }>
@@ -107,7 +109,6 @@ class HomeScreen extends Component {
 				</div>
 				<SettingDialog
 					isModal={ isModal }
-					openModal={ openModal }
 					closeModal={ closeModal }
 					businessType={ this.state.businessType }
 					businessStatus={ this.state.businessStatus }

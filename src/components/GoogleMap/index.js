@@ -22,18 +22,22 @@ class CustomMarker extends Component {
 	
 	render() {
 		const {showInfoWindow,} = this.state;
-		const {item = {}} = this.props
+		const {item = {},isMarkerInfoWindowAllowed} = this.props
 		const {geometry = {}, vicinity, name, business_status, photos, place_id} = item || {}
 		const {location,} = geometry || {}
 		let imageUrl = ''
-		
 		if (typeof _.get(photos, '[0].getUrl') === "function") {
 			imageUrl = photos[0].getUrl()
 		}
-		
 		return (
-			<Marker position={ location } onClick={ this.handleMouseOver }>
-				{ showInfoWindow && (
+			<Marker
+			icon={{
+			// 	url:item.icon,
+				// eslint-disable-next-line no-undef
+				anchor: new google.maps.Point(5, 58), scaledSize:  new google.maps.Size(100,100)
+			}}
+				position={ location } onClick={ this.handleMouseOver }>
+				{isMarkerInfoWindowAllowed&& showInfoWindow && (
 					<InfoWindow onCloseClick={ this.handleMouseExit }>
 						<div>
 							<img src={ imageUrl } style={ {
@@ -61,15 +65,13 @@ const MyMapComponent = withScriptjs(withGoogleMap((props) => {
 		return <GoogleMap
 			defaultZoom={ 15 }
 			ref={ (ref) => props.getMapRef(ref) }
-			options={ {
-				// styles: MAP_CONFIGURATION,
-			} }
 			defaultCenter={ MAP_CENTER }>
 			{
 				_.map(dataList, (item) => {
 					return <CustomMarker
 						key={ item.id }
 						item={ item }
+						isMarkerInfoWindowAllowed={props.isMarkerInfoWindowAllowed}
 					/>
 				})
 			}
@@ -90,7 +92,6 @@ class CustomMap extends Component {
 	render() {
 		return (
 			<MyMapComponent
-				isMarkerShown
 				{ ...this.props }
 				googleMapURL={ `https://maps.googleapis.com/maps/api/js?key=${ PLACE_API_KEY }&v=3.exp&libraries=geometry,drawing,places` }
 				loadingElement={ <div style={ {height: `100%`} }/> }

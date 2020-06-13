@@ -6,7 +6,8 @@ import {LocationSearchInput, SettingDialog} from "../../components";
 import {navigateMap} from "../../utilities/MapUtils";
 import {toast} from "react-toastify";
 import * as _ from 'lodash'
-import {searchGoogleMapNearbyPlaces} from "../../utilities/ApiCaller";
+import {searchGoogleMapNearbyPlaces, searchGoogleMapNearbyPlacesWithPagination} from "../../utilities/ApiCaller";
+import Typography from "@material-ui/core/Typography";
 
 
 const styles = ((theme) => ({
@@ -35,87 +36,76 @@ class RealStateScreen extends Component {
 		this.state = {
 			dataList: [],
 			mapCenter: MAP_CENTER,
-			businessStatus: '',
 			businessType: '',
 			radius: 1500
 		};
 		this.mapRef = null
 	}
 	
-	onChange = ({target: {value} = {}}) => {
-	};
-	
 	onSelectBusinessType = (businessType) => {
 		this.setState({businessType})
 	};
 	
-	onSelectBusinessStatus = (businessStatus) => {
-		this.setState({businessStatus})
-	};
-	
-	searchHandler = async () => {
-		const {closeModal} = this.props;
-		const {mapCenter, businessType, businessStatus, radius} = this.state;
-		if (_.isEmpty(businessStatus)) {
-			return toast.error('Business Status is required')
+	fetchDataHandler = async () => {
+		const {mapCenter, radius} = this.state;
+		let {businessType} = this.state;
+		try {
+			businessType=_.map(businessType,(item)=>item.title)
+			const results = await searchGoogleMapNearbyPlaces({mapCenter, businessType, radius})
+			this.setState({dataList:results})
+		} catch (e) {
 		}
+	}
+	
+	searchHandler = () => {
+		const {closeModal} = this.props;
+		const {businessType } = this.state;
 		if (_.isEmpty(businessType)) {
 			return toast.error('Business Type is required')
 		}
 		this.setState({dataList: []});
 		closeModal();
-		searchGoogleMapNearbyPlaces({
-			mapCenter, businessType, businessStatus, radius,
-			successHandler: this.successHandler
-		})
-	};
-	
-	successHandler = (updatedList = [], isNext) => {
-		const {dataList = []} = this.state;
-		const updatedStateList = [ ...dataList, ...updatedList ];
-		if (_.isEmpty(updatedStateList) && isNext === false) {
-			toast.error('No result is found')
-		}
-		this.setState({dataList: updatedStateList})
-	};
-	
-	onRadiusChanged = (_, radius) => {
-		this.setState({radius: parseInt(radius)})
+		this.fetchDataHandler()
 	};
 	
 	render() {
-		const {isModal, openModal, closeModal} = this.props;
+		const {isModal, closeModal} = this.props;
+		console.log(this.state)
 		return (
 			<div className='flex h-100 position-relative'>
-				<CustomMap
-					getMapRef={ (ref) => (this.mapRef = ref) }
-					dataList={ this.state.dataList }
-					radius={ this.state.radius }
-					mapCenter={ this.state.mapCenter }
-				/>
-				<div className='position-absolute d-flex justify-content-center'
-				     style={ {right: 0, left: 0, top: 10, zIndex: 999} }>
-					<div className='row'>
-						<div className='col-8 mt-5 mt-md-0'>
-							<LocationSearchInput onSelectHandler={ (item) => {
-								this.setState({mapCenter: item});
-								navigateMap(this.mapRef, item);
-							} }/>
-						</div>
+				<div className='d-flex' style={{height:'70%'}}>
+					<div style={{width:'20%'}}>
+						image grid
+					</div>
+					<div  style={{width:'80%'}}>
+						<CustomMap
+							getMapRef={ (ref) => (this.mapRef = ref) }
+							dataList={ this.state.dataList }
+							radius={ this.state.radius }
+							mapCenter={ this.state.mapCenter }
+						/>
 					</div>
 				</div>
 				<SettingDialog
 					isModal={ isModal }
-					openModal={ openModal }
 					closeModal={ closeModal }
+					isBusinessStatus={ false }
+					isSlider={ false }
+					isMultipleBusinessType={ true }
 					businessType={ this.state.businessType }
-					businessStatus={ this.state.businessStatus }
-					onSelectBusinessStatus={ this.onSelectBusinessStatus }
 					onSelectBusinessType={ this.onSelectBusinessType }
 					onSave={ this.searchHandler }
-					radius={ this.state.radius }
-					onRadiusChanged={ this.onRadiusChanged }
-				/>
+				>
+					<div>
+						<Typography gutterBottom>Search Place</Typography>
+						<LocationSearchInput
+							listContainer={ {width: '100%'} }
+							onSelectHandler={ (item) => {
+								this.setState({mapCenter: item});
+								navigateMap(this.mapRef, item);
+							} }/>
+					</div>
+				</SettingDialog>
 			</div>
 		)
 	}

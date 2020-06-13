@@ -14,20 +14,40 @@ import {BUSINESS_STATUS_LIST, PLACE_TYPES_LIST} from "../../utilities/Constants"
 import Slider from '@material-ui/core/Slider';
 import * as _ from 'lodash'
 
+let a=[
+	{
+		"title": "airport"
+	},
+	{
+		"title": "aquarium"
+	},
+	{
+		"title": "art_gallery"
+	}
+]
 const AutocompleteSearch = (props) => {
-	const {dataList, label} = props || {}
+	const {dataList, label,multiple} = props || {}
+	const optionalParams={}
+	if(!props.multiple){
+		optionalParams['value']={title:props.value}
+	}else {
+		optionalParams['value']=props.value||[]
+	}
 	return (
 		<Autocomplete
+			multiple={props.multiple}
+			{...optionalParams}
 			id="combo-box-demo"
-			// value={{title:props.value}}
 			options={ dataList }
 			getOptionLabel={ (option) => option.title }
-			renderInput={ (params) => <TextField { ...params } label={ label } variant="outlined" /> }
-			onSelect={ (event = {}) => {
-				const {target = {}} = event || {}
-				const {value} = target || {}
-				props.onSelect(value)
-			} }
+			renderInput={ (params) => <TextField { ...params } label={ label } variant="outlined"/> }
+			onChange={(event,value)=>{
+				if(!multiple){
+					props.onSelect(value.title)
+				}else {
+					props.onSelect(value)
+				}
+			}}
 		/>
 	);
 }
@@ -73,6 +93,7 @@ const DialogActions = withStyles((theme) => ({
 }))(MuiDialogActions);
 
 const SettingDialog = (props) => {
+	const {isBusinessStatus = true, isBusinessType = true, isSlider = true} = props || {}
 	return (
 		<div>
 			<Dialog
@@ -81,43 +102,57 @@ const SettingDialog = (props) => {
 				open={ props.isModal }
 				fullWidth={ true }
 				maxWidth={ 'sm' }
-				style={{marginTop:'-15%'}}
+				style={ {marginTop: '-15%'} }
 			>
 				<div>
 					<DialogTitle id="customized-dialog-title" onClose={ props.closeModal }>
 						Set Search Parameters
 					</DialogTitle>
 					<DialogContent dividers>
-						<Typography gutterBottom>Business Status *</Typography>
-						<AutocompleteSearch
-							{ ...props }
-							dataList={ BUSINESS_STATUS_LIST }
-							label={ 'Business Status' }
-							value={props.businessStatus}
-							onSelect={ props.onSelectBusinessStatus }/>
-						<Typography gutterBottom className='mt-3'>Business Type *</Typography>
-						
-						<AutocompleteSearch
-							{ ...props }
-							dataList={ PLACE_TYPES_LIST }
-							label={ 'Business Type' }
-							value={props.businessType}
-							onSelect={ props.onSelectBusinessType }/>
-						
-						<Typography gutterBottom className='mt-4' style={{marginBottom:-5}}>Radius: {props.radius} m</Typography>
-						<Slider
-							value={props.radius}
-							min={0}
-							step={0.1}
-							max={30000}
-							onChange={props.onRadiusChanged}
-						/>
+						{props.children||null}
+						{ isBusinessStatus &&
+						<div>
+							<Typography gutterBottom>Business Status *</Typography>
+							<AutocompleteSearch
+								{ ...props }
+								multiple={props.isMultipleBusinessStatus||false}
+								dataList={ BUSINESS_STATUS_LIST }
+								label={ 'Business Status' }
+								value={ props.businessStatus }
+								onSelect={ props.onSelectBusinessStatus }/>
+						</div> }
+						{
+							isBusinessType &&
+							<div>
+								<Typography gutterBottom className='mt-3'>Business Type *</Typography>
+								<AutocompleteSearch
+									{ ...props }
+									multiple={props.isMultipleBusinessType||false}
+									dataList={ PLACE_TYPES_LIST }
+									label={ 'Business Type' }
+									value={ props.businessType }
+									onSelect={ props.onSelectBusinessType }/>
+							</div>
+						}
+						{
+							isSlider && <div>
+								<Typography gutterBottom className='mt-4'
+								            style={ {marginBottom: -5} }>Radius: { props.radius } m</Typography>
+								<Slider
+									value={ props.radius }
+									min={ 0 }
+									step={ 0.1 }
+									max={ 30000 }
+									onChange={ props.onRadiusChanged }
+								/>
+							</div>
+						}
 					</DialogContent>
 					<DialogActions>
-						<Button autoFocus onClick={ props.closeModal} color="primary">
+						<Button autoFocus onClick={ props.closeModal } color="primary">
 							Cancel
 						</Button>
-						<Button onClick={props.onSave} color="primary" autoFocus>
+						<Button onClick={ props.onSave } color="primary" autoFocus>
 							Save
 						</Button>
 					</DialogActions>

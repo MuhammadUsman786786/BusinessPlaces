@@ -1,6 +1,7 @@
 import React from 'react';
 import PlacesAutocomplete, {geocodeByAddress, getLatLng,} from 'react-places-autocomplete';
 import './index.css'
+import * as _ from 'lodash'
 
 class LocationSearchInput extends React.Component {
 	constructor(props) {
@@ -14,7 +15,11 @@ class LocationSearchInput extends React.Component {
 	
 	handleSelect = address => {
 		geocodeByAddress(address)
-			.then(results => getLatLng(results[0]))
+			.then(results => {
+				const address=_.get(results,'[0].formatted_address','')
+				this.handleChange(address)
+				return getLatLng(results[0])
+			})
 			.then(latLng => {
 				const {lat:latitude,lng:longitude}=latLng||{}
 				this.props.onSelectHandler({latitude,longitude,lat:latitude,lng:longitude})
@@ -30,7 +35,7 @@ class LocationSearchInput extends React.Component {
 				onSelect={this.handleSelect}
 			>
 				{({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
-					<div className='list-container' >
+					<div className='list-container' style={this.props.listContainer} >
 						<input
 							{...getInputProps({
 								placeholder: 'Search Google Maps',
