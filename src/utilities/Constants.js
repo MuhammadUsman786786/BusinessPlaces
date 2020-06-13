@@ -10,6 +10,13 @@ export const BUSINESS_STATUS_LIST = [
 	{title: 'CLOSED_PERMANENTLY'},
 ]
 
+export const MARKER_ICONS={
+	BLUE:'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+	YELLOW:'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png',
+	GREEN:'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
+	RED:'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
+}
+
 export const PLACE_TYPES_LIST = [
 	{title: 'accounting'},
 	{title: 'airport'},

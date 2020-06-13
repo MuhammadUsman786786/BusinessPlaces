@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {GoogleMap, Circle, InfoWindow, Marker, withGoogleMap, withScriptjs} from "react-google-maps"
 import * as _ from 'lodash'
 import {Link} from 'react-router-dom'
-import {MAP_CENTER, MAP_CONFIGURATION, PLACE_API_KEY} from "../../utilities/Constants";
+import {MAP_CENTER, MAP_CONFIGURATION, MARKER_ICONS, PLACE_API_KEY} from "../../utilities/Constants";
 import {buildImageUrl, generateGoogleMapPlaceLink} from "../../utilities/Transform";
 
 class CustomMarker extends Component {
@@ -32,9 +32,11 @@ class CustomMarker extends Component {
 		return (
 			<Marker
 			icon={{
-			// 	url:item.icon,
+				url:this.props.icon,
 				// eslint-disable-next-line no-undef
-				anchor: new google.maps.Point(5, 58), scaledSize:  new google.maps.Size(100,100)
+				// anchor: new google.maps.Point(0, 100),
+				// eslint-disable-next-line no-undef
+				// scaledSize:  new google.maps.Size(100,100)
 			}}
 				position={ location } onClick={ this.handleMouseOver }>
 				{isMarkerInfoWindowAllowed&& showInfoWindow && (
@@ -71,6 +73,7 @@ const MyMapComponent = withScriptjs(withGoogleMap((props) => {
 					return <CustomMarker
 						key={ item.id }
 						item={ item }
+						icon={MARKER_ICONS}
 						isMarkerInfoWindowAllowed={props.isMarkerInfoWindowAllowed}
 					/>
 				})
