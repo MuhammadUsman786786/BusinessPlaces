@@ -116,7 +116,7 @@ export const PLACE_TYPES_LIST = [
 	{title: 'zoo'},
 ]
 
-
+export const TEST_IMAGE_URL='https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__340.jpg'
 export const API_RESPONSE = [
 	{
 		"business_status": "OPERATIONAL",
@@ -548,6 +548,9 @@ export const API_RESPONSE = [
 		"vicinity": "15 Majeed plaza, Bank Road, Rawalpindi",
 		"html_attributions": []
 	},
+]
+
+export const API_RESPONSE_1=[
 	{
 		"business_status": "OPERATIONAL",
 		"geometry": {

@@ -1,18 +1,23 @@
+/* eslint-disable no-undef */
 import React, {Component} from 'react'
-import {GoogleMap, Circle, InfoWindow, Marker, withGoogleMap, withScriptjs} from "react-google-maps"
+import {Circle, GoogleMap, InfoWindow, Marker, withGoogleMap, withScriptjs} from "react-google-maps"
 import * as _ from 'lodash'
 import {Link} from 'react-router-dom'
-import {MAP_CENTER, MAP_CONFIGURATION, MARKER_ICONS, PLACE_API_KEY} from "../../utilities/Constants";
-import {buildImageUrl, generateGoogleMapPlaceLink} from "../../utilities/Transform";
+import {MAP_CENTER, MARKER_ICONS, PLACE_API_KEY} from "../../utilities/Constants";
+import {generateGoogleMapPlaceLink} from "../../utilities/Transform";
+import Directions from "../Directions";
 
 class CustomMarker extends Component {
 	state = {
 		showInfoWindow: false
 	};
 	handleMouseOver = e => {
-		this.setState({
-			showInfoWindow: true
-		});
+		const {
+			onMarkerClickHandler = () => {
+			}
+		} = this.props;
+		this.setState({showInfoWindow: true});
+		onMarkerClickHandler()
 	};
 	handleMouseExit = e => {
 		this.setState({
@@ -22,24 +27,35 @@ class CustomMarker extends Component {
 	
 	render() {
 		const {showInfoWindow,} = this.state;
-		const {item = {},isMarkerInfoWindowAllowed} = this.props
-		const {geometry = {}, vicinity, name, business_status, photos, place_id} = item || {}
-		const {location,} = geometry || {}
-		let imageUrl = ''
+		const {item = {}, isMarkerInfoWindowAllowed} = this.props;
+		const {id, geometry = {}, vicinity, name, business_status, photos, place_id} = item || {};
+		const {location,} = geometry || {};
+		let imageUrl = '';
+		let icon = this.props.icon;
 		if (typeof _.get(photos, '[0].getUrl') === "function") {
 			imageUrl = photos[0].getUrl()
 		}
+		
+		let scaledSize = new google.maps.Size(30, 30);
+		if (id === this.props.hoverPlaceId) {
+			scaledSize = new google.maps.Size(50, 50)
+		}
+		
+		if(id===this.props.selectedPlaceId){
+			scaledSize = new google.maps.Size(50, 50);
+			icon=MARKER_ICONS.GREEN
+		}
+
 		return (
 			<Marker
-			icon={{
-				url:this.props.icon,
-				// eslint-disable-next-line no-undef
-				// anchor: new google.maps.Point(0, 100),
-				// eslint-disable-next-line no-undef
-				// scaledSize:  new google.maps.Size(100,100)
-			}}
-				position={ location } onClick={ this.handleMouseOver }>
-				{isMarkerInfoWindowAllowed&& showInfoWindow && (
+				icon={ {
+					url: icon,
+					scaledSize
+					// eslint-disable-next-line no-undef
+				} }
+				position={ location }
+				onClick={ this.handleMouseOver }>
+				{ isMarkerInfoWindowAllowed && showInfoWindow && (
 					<InfoWindow onCloseClick={ this.handleMouseExit }>
 						<div>
 							<img src={ imageUrl } style={ {
@@ -51,7 +67,7 @@ class CustomMarker extends Component {
 							<p className='font-weight-bold' style={ {marginTop: -8, width: '220px'} }>{ vicinity }</p>
 							<p className='font-weight-bold' style={ {marginTop: -8, width: '220px'} }>{ business_status }</p>
 							<Link to={ {pathname: generateGoogleMapPlaceLink(place_id)} } target="_blank">
-								<button className='btn btn-sm btn-primary'>Visit ></button>
+								<button className='btn btn-sm btn-primary'>Visit</button>
 							</Link>
 						</div>
 					</InfoWindow>
@@ -63,7 +79,8 @@ class CustomMarker extends Component {
 
 
 const MyMapComponent = withScriptjs(withGoogleMap((props) => {
-		const {dataList = [], mapCenter, radius} = props || {}
+		const {dataList = [], dataList1 = [], mapCenter, radius} = props || {};
+		const {hoverPlaceId,selectedPlaceId} = props || {};
 		return <GoogleMap
 			defaultZoom={ 15 }
 			ref={ (ref) => props.getMapRef(ref) }
@@ -71,10 +88,29 @@ const MyMapComponent = withScriptjs(withGoogleMap((props) => {
 			{
 				_.map(dataList, (item) => {
 					return <CustomMarker
-						key={ item.id }
 						item={ item }
-						icon={MARKER_ICONS}
-						isMarkerInfoWindowAllowed={props.isMarkerInfoWindowAllowed}
+						key={ item.id }
+						icon={ MARKER_ICONS.RED }
+						hoverPlaceId={ hoverPlaceId }
+						isMarkerInfoWindowAllowed={ props.isMarkerInfoWindowAllowed }
+						onMarkerClickHandler={ () => {
+							props.onMarkerClickHandler(item)
+						} }
+					/>
+				})
+			}
+			{
+				_.map(dataList1, (item) => {
+					return <CustomMarker
+						item={ item }
+						key={ item.id }
+						icon={ MARKER_ICONS.BLUE }
+						hoverPlaceId={ hoverPlaceId }
+						selectedPlaceId={ selectedPlaceId }
+						isMarkerInfoWindowAllowed={ props.isMarkerInfoWindowAllowed }
+						onMarkerClickHandler={ () => {
+							props.onMarkerClickHandler1(item)
+						} }
 					/>
 				})
 			}
@@ -87,6 +123,9 @@ const MyMapComponent = withScriptjs(withGoogleMap((props) => {
 				radius={ radius }
 				options={ {strokeColor: "#ff0000"} }
 			/> }
+			<Directions
+				travelMode={ google.maps.TravelMode.DRIVING }
+				places={ props.directionsList }/> }
 		</GoogleMap>
 	}
 ));

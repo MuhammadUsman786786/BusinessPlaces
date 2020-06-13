@@ -35,7 +35,6 @@ export const searchGoogleMapNearbyPlaces = (props) => new Promise((resolve, reje
 	const map = new google.maps.Map(document.getElementById('map'), {center: location, zoom: 17});
 	const service = new google.maps.places.PlacesService(map);
 	const type = _.isString(businessType) ? [ businessType ] : businessType
-	console.log({location, radius, type})
 	service.nearbySearch(
 		{location, radius, type},
 		function (results, status, pagination) {
