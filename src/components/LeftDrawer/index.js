@@ -7,7 +7,7 @@ const ImageGrid = (props) => {
 	if (_.isEmpty(imagesList)) {
 		return null
 	}
-	return <div className='d-flex flex-wrap' style={ {height: 'calc(100vh - 235px)', overflow: 'scroll',marginRight:4} }>
+	return <div className='d-flex flex-wrap' style={ {height: 'calc(100vh - 235px)', overflow: 'scroll',marginRight:4,paddingTop:55} }>
 		{ _.map(imagesList, (item) => {
 			const {photos} = item || {};
 			// eslint-disable-next-line no-unused-vars

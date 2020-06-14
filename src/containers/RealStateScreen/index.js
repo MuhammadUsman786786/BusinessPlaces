@@ -153,15 +153,15 @@ class RealStateScreen extends Component {
 			</button>
 			{ !_.isEmpty(destinationPlaceInfo) && <div>
 				<Link to={ {pathname: url} } target="_blank">
-					<p className='font-weight-bold text-dark'>{ formatted_address }</p>
+					<p className='font-weight-bold text-dark'>{ name }</p>
+					<p className='font-weight-bold text-dark' style={ {marginTop: -20} }>{ (types || [])[0] }</p>
+					<p className='text-dark' style={ {marginTop: -20} }>{ formatted_address }</p>
 				</Link>
 				<div className='d-flex'>
 					<span className='d-inline-block mr-2'>{ rating }</span>
 					<Rating value={ rating } editing={ false }/>
 					<span className='d-inline-block ml-2'>({ _.size(reviews) })</span>
 				</div>
-				<p className='text-dark'>{ name }</p>
-				<p style={ {marginTop: -20} }>{ (types || [])[0] }</p>
 				<div className='d-flex flex-wrap'>
 					{ _.map(photos, (item) => {
 						const imageUrl = typeof item.getUrl === "function" ? item.getUrl() : ''
@@ -178,7 +178,7 @@ class RealStateScreen extends Component {
 	
 	renderHeader = () => {
 		return <div className='w-100 h-100 pl-3 pt-2'>
-			<p className='text-danger font-weight-bold' style={ {marginBottom: 0} }>info is here</p>
+			<p className='custom-text-blue font-weight-bold' style={ {marginBottom: 0} }>info is here</p>
 			<div className='d-flex w-100' style={ {height: '70%'} }>
 				<div style={ {width: 300, height: '100%'} } className='mb-1'>
 					<img src={ require('../../images/defaultHotel.jpeg') }
@@ -187,7 +187,7 @@ class RealStateScreen extends Component {
 				<div className='d-flex justify-content-between w-100 px-3'>
 					<div className='flex-grow-1'>
 						<p className='text-dark font-weight-bold' style={ {marginBottom: 0} }>Single family home</p>
-						<h4 className='text-danger font-weight-bold' style={ {marginBottom: 0} }>Dark Avenue</h4>
+						<h4 className='custom-text-blue font-weight-bold' style={ {marginBottom: 0} }>Dark Avenue</h4>
 						<p className='text-dark font-weight-bold' style={ {marginBottom: 0} }>South River City Austin</p>
 						<div className='w-50 my-2' style={{backgroundColor:'rgba(0,0,0,0.11)',height:1}}/>
 						<div className='d-flex'>
@@ -204,16 +204,16 @@ class RealStateScreen extends Component {
 								<p className='text-dark ml-2 mb-0'>2472 Sqft</p>
 							</div>
 						</div>
-						<h4 className='text-info font-weight-bold' style={ {marginBottom: 0} }>$879,500</h4>
+						<h4 className='custom-text-blue font-weight-bold' style={ {marginBottom: 0} }>$879,500</h4>
 					</div>
 					<div>
 						<div className='d-flex mb-2'>
-							<button className='btn btn-sm  btn-outline-info ml-2 py-3 px-3'>Mon</button>
-							<button className='btn btn-sm btn-outline-info ml-2 py-3 px-3'>Tue</button>
-							<button className='btn btn-sm btn-outline-info ml-2 py-3 px-3'>Wed</button>
+							<button className='btn btn-sm  btn-outline-info ml-2 py-3 px-3 custom-text-blue custom-border-blue '>Mon</button>
+							<button className='btn btn-sm btn-outline-info ml-2 py-3 px-3 custom-text-blue custom-border-blue '>Tue</button>
+							<button className='btn btn-sm btn-outline-info ml-2 py-3 px-3 custom-text-blue custom-border-blue '>Wed</button>
 						</div>
 						<div className='d-flex justify-content-center'>
-							<button className='btn btn-info'>Schedule Call</button>
+							<button className='btn btn-info custom-btn-blue'>Schedule Call</button>
 						</div>
 					</div>
 				</div>

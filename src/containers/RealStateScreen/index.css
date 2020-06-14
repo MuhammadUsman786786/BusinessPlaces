@@ -6,25 +6,18 @@
     background-color: rgb(231, 231, 231);
 }
 
-.slide-in-animation {
-    transition: 10s;
-    left: 0;
+.custom-text-blue {
+    color: #3445b4
 }
 
-.example-enter {
-    opacity: 0.01;
+.custom-btn-blue {
+    background-color: #3445b4
 }
 
-.example-enter.example-enter-active {
-    opacity: 1;
-    transition: opacity 10000ms ease-in;
+.custom-border-blue {
+    border-color: #3445b4
 }
 
-.example-leave {
-    opacity: 1;
-}
-
-.example-leave.example-leave-active {
-    opacity: 0.01;
-    transition: opacity 10000ms ease-in;
+.custom-border-blue:hover{
+    background-color: #3445b4;
 }
