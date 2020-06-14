@@ -50,7 +50,7 @@ export const searchGoogleMapNearbyPlaces = (props) => new Promise((resolve, reje
 		});
 });
 
-export const getDirections = (places) =>new Promise((resolve, reject) => {
+export const getDirections = (places) => new Promise((resolve, reject) => {
 	if (_.size(places < 2)) {
 		resolve([])
 	}
@@ -75,4 +75,35 @@ export const getDirections = (places) =>new Promise((resolve, reject) => {
 			resolve([])
 		}
 	);
+})
+
+export const getPlaceDetails = (props) => new Promise((resolve, reject) => {
+	
+	const {mapCenter, placeId} = props || {}
+	const location = {lat: mapCenter.lat, lng: mapCenter.lng};
+	const map = new google.maps.Map(document.getElementById('map'), {
+		center: location,
+		zoom: 15
+	});
+	const request = {
+		placeId: placeId,
+		// fields: [
+		// 	'name',
+		// 	'formatted_address',
+		// 	'place_id',
+		// 	'price_level',
+		// 	'rating',
+		// 	'review',
+		// 	'user_ratings_total'
+		// ]
+	};
+	console.log({request})
+	const service = new google.maps.places.PlacesService(map);
+	service.getDetails(request, function (place, status) {
+		if (status === google.maps.places.PlacesServiceStatus.OK) {
+			resolve(place)
+			console.log({place})
+		}
+		resolve({})
+	});
 })

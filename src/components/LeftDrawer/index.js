@@ -16,12 +16,15 @@ const ImageGrid = (props) => {
 				imageUrl = photos[0].getUrl()
 			}
 			return <div
+				id={item.id}
 				className='image-style'
 				onMouseOver={ () => {
-					props.setHoverPlaceId(item.id)
+					const {setHoverPlaceId=()=>{}}=props||{}
+					setHoverPlaceId(item.place_id)
 				} }
 				onMouseLeave={ () => {
-					props.setHoverPlaceId('')
+					const {setHoverPlaceId=()=>{}}=props||{}
+					setHoverPlaceId('')
 				} }
 			>
 				<img

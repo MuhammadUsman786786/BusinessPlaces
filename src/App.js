@@ -8,7 +8,7 @@ import * as _ from "lodash";
 
 const App = () => {
 	const [ modalIndex, setModal ] = useState(-1)
-	const [ index, setTabIndex ] = useState(1)
+	const [ index, setTabIndex ] = useState(2)
 	const [ hoverPlaceId, setHoverPlaceId ] = useState(1)
 	const [ imagesList, setImagesList ] = useState([])
 	const closeModal = () => setModal(-1)

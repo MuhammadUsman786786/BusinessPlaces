@@ -2,7 +2,7 @@ export const PLACE_API_KEY = 'AIzaSyBjLKP0pJlrIXLDX1XH205-nb2taTONzHQ'
 
 // export const MAP_CENTER = {lat: 35.6961865, lng: 139.7934856}
 // export const MAP_CENTER = {lat: 35.6448676, lng: 139.4126225}
-export const MAP_CENTER = {lat: 33.5995994,lng: 73.0490392}
+export const MAP_CENTER = {lat: 33.5995994, lng: 73.0490392}
 
 export const BUSINESS_STATUS_LIST = [
 	{title: 'OPERATIONAL'},
@@ -10,11 +10,11 @@ export const BUSINESS_STATUS_LIST = [
 	{title: 'CLOSED_PERMANENTLY'},
 ]
 
-export const MARKER_ICONS={
-	BLUE:'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
-	YELLOW:'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png',
-	GREEN:'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
-	RED:'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
+export const MARKER_ICONS = {
+	BLUE: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+	YELLOW: 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png',
+	GREEN: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
+	RED: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
 }
 
 export const PLACE_TYPES_LIST = [
@@ -116,7 +116,7 @@ export const PLACE_TYPES_LIST = [
 	{title: 'zoo'},
 ]
 
-export const TEST_IMAGE_URL='https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__340.jpg'
+export const TEST_IMAGE_URL = 'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__340.jpg'
 export const API_RESPONSE = [
 	{
 		"business_status": "OPERATIONAL",
@@ -550,7 +550,7 @@ export const API_RESPONSE = [
 	},
 ]
 
-export const API_RESPONSE_1=[
+export const API_RESPONSE_1 = [
 	{
 		"business_status": "OPERATIONAL",
 		"geometry": {
@@ -1060,3 +1060,80 @@ export const API_RESPONSE_1=[
 		"html_attributions": []
 	}
 ]
+
+
+export const PLACE_DETAILS = {
+	"business_status": "OPERATIONAL",
+	"formatted_address": "Adam Jee Rd, Saddar, Rawalpindi, Punjab 46000, Pakistan",
+	"formatted_phone_number": "(051) 5120194",
+	"icon": "https://maps.gstatic.com/mapfiles/place_api/icons/bank_dollar-71.png",
+	"id": "cbaacc5e0eb578fc6475ef3014e8e71a2e098ede",
+	"name": "The Bank of Khyber",
+	"photos": [
+		{
+			"height": 3120,
+			"html_attributions": [
+				"\u003ca href=\"https://maps.google.com/maps/contrib/100168651724928799858\"\u003eMunib Badar\u003c/a\u003e"
+			],
+			"photo_reference": "CmRaAAAAfAiarWdsPhMFUpgvRzcu5FCfKmoMFPnCGe0-O059P7LrMJHDEL5H91IZQabABKV2F99ACbeZgnoAf0VAGWCHrzvUoXUxYMB2ugmUWRu8HP2DQQyDR-E32ITO5LsUrRXZEhD6TUu-z8BQ0PlWMinlmTmDGhRp-iNaDClej9dybYpxTwczUMtXuw",
+			"raw_reference": {
+				"fife_url": "https://lh3.googleusercontent.com/p/AF1QipNxdeSg0qbH4EDb6tU6IW4R2_rCS07MFujT4lK1=k"
+			},
+			"width": 4160
+		}
+	],
+	"place_id": "ChIJO9Y8upyU3zgRWbqfKRmK-sQ",
+	"rating": 3.6,
+	"reference": "ChIJO9Y8upyU3zgRWbqfKRmK-sQ",
+	"reviews": [
+		{
+			"author_name": "Imdad Khan",
+			"author_url": "https://www.google.com/maps/contrib/114584044604527454855/reviews",
+			"language": "en",
+			"profile_photo_url": "https://lh4.ggpht.com/-sqYXF6QlH8c/AAAAAAAAAAI/AAAAAAAAAAA/V0NqK1nJIEc/s128-c0x00000000-cc-rp-mo-ba8/photo.jpg",
+			"rating": 4,
+			"relative_time_description": "2 years ago",
+			"text": "Before shifting here it was situated on Bank Road opposite to Singapore plaza",
+			"time": 1514414020
+		},
+		{
+			"author_name": "Bilal Javed",
+			"author_url": "https://www.google.com/maps/contrib/108412270139827835674/reviews",
+			"profile_photo_url": "https://lh3.ggpht.com/-cBMyKgY-8nk/AAAAAAAAAAI/AAAAAAAAAAA/6rWObaS9nrc/s128-c0x00000000-cc-rp-mo-ba5/photo.jpg",
+			"rating": 5,
+			"relative_time_description": "4 months ago",
+			"text": "",
+			"time": 1581419722
+		},
+		{
+			"author_name": "rizwan khan",
+			"author_url": "https://www.google.com/maps/contrib/102208472822269166060/reviews",
+			"profile_photo_url": "https://lh6.ggpht.com/-zSlKcGbr2hQ/AAAAAAAAAAI/AAAAAAAAAAA/GcDj1RfGfK8/s128-c0x00000000-cc-rp-mo/photo.jpg",
+			"rating": 1,
+			"relative_time_description": "2 years ago",
+			"text": "",
+			"time": 1505626584
+		},
+		{
+			"author_name": "Munib Badar",
+			"author_url": "https://www.google.com/maps/contrib/100168651724928799858/reviews",
+			"profile_photo_url": "https://lh5.ggpht.com/-oIu8tVz2OZk/AAAAAAAAAAI/AAAAAAAAAAA/BBaFJln0xVo/s128-c0x00000000-cc-rp-mo-ba5/photo.jpg",
+			"rating": 5,
+			"relative_time_description": "2 years ago",
+			"text": "",
+			"time": 1517919535
+		},
+		{
+			"author_name": "mubbashir Hassan",
+			"author_url": "https://www.google.com/maps/contrib/116314535017139312296/reviews",
+			"profile_photo_url": "https://lh3.ggpht.com/-KAm_yVh4A-Q/AAAAAAAAAAI/AAAAAAAAAAA/DlMOg-Gb0TQ/s128-c0x00000000-cc-rp-mo-ba8/photo.jpg",
+			"rating": 3,
+			"relative_time_description": "2 years ago",
+			"text": "",
+			"time": 1503457102
+		}
+	],
+	"url": "https://maps.google.com/?cid=14193809016288688729",
+	"user_ratings_total": 5,
+	"website": "http://www.bok.com.pk/"
+}

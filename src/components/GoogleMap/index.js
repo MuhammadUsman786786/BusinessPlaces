@@ -28,7 +28,7 @@ class CustomMarker extends Component {
 	render() {
 		const {showInfoWindow,} = this.state;
 		const {item = {}, isMarkerInfoWindowAllowed} = this.props;
-		const {id, geometry = {}, vicinity, name, business_status, photos, place_id} = item || {};
+		const {geometry = {}, vicinity, name, business_status, photos, place_id} = item || {};
 		const {location,} = geometry || {};
 		let imageUrl = '';
 		let icon = this.props.icon;
@@ -37,15 +37,15 @@ class CustomMarker extends Component {
 		}
 		
 		let scaledSize = new google.maps.Size(30, 30);
-		if (id === this.props.hoverPlaceId) {
+		if (place_id === this.props.hoverPlaceId) {
 			scaledSize = new google.maps.Size(50, 50)
 		}
 		
-		if(id===this.props.selectedPlaceId){
+		if (place_id === this.props.selectedPlaceId) {
 			scaledSize = new google.maps.Size(50, 50);
-			icon=MARKER_ICONS.GREEN
+			icon = MARKER_ICONS.GREEN
 		}
-
+		
 		return (
 			<Marker
 				icon={ {
@@ -80,7 +80,13 @@ class CustomMarker extends Component {
 
 const MyMapComponent = withScriptjs(withGoogleMap((props) => {
 		const {dataList = [], dataList1 = [], mapCenter, radius} = props || {};
-		const {hoverPlaceId,selectedPlaceId} = props || {};
+		const {hoverPlaceId, selectedPlaceId} = props || {};
+		const {
+			onMarkerClickHandler = () => {
+			},
+			onMarkerClickHandler1 = () => {
+			}
+		} = props || {}
 		return <GoogleMap
 			defaultZoom={ 15 }
 			ref={ (ref) => props.getMapRef(ref) }
@@ -89,12 +95,12 @@ const MyMapComponent = withScriptjs(withGoogleMap((props) => {
 				_.map(dataList, (item) => {
 					return <CustomMarker
 						item={ item }
-						key={ item.id }
+						key={ item.place_id }
 						icon={ MARKER_ICONS.RED }
 						hoverPlaceId={ hoverPlaceId }
 						isMarkerInfoWindowAllowed={ props.isMarkerInfoWindowAllowed }
 						onMarkerClickHandler={ () => {
-							props.onMarkerClickHandler(item)
+							onMarkerClickHandler(item)
 						} }
 					/>
 				})
@@ -103,13 +109,13 @@ const MyMapComponent = withScriptjs(withGoogleMap((props) => {
 				_.map(dataList1, (item) => {
 					return <CustomMarker
 						item={ item }
-						key={ item.id }
+						key={ item.place_id }
 						icon={ MARKER_ICONS.BLUE }
 						hoverPlaceId={ hoverPlaceId }
 						selectedPlaceId={ selectedPlaceId }
 						isMarkerInfoWindowAllowed={ props.isMarkerInfoWindowAllowed }
 						onMarkerClickHandler={ () => {
-							props.onMarkerClickHandler1(item)
+							onMarkerClickHandler1(item)
 						} }
 					/>
 				})
@@ -123,7 +129,10 @@ const MyMapComponent = withScriptjs(withGoogleMap((props) => {
 				radius={ radius }
 				options={ {strokeColor: "#ff0000"} }
 			/> }
-			<DirectionsRenderer directions={ props.directionsPath}/>
+			{
+				!_.isEmpty(props.directionsPath) &&
+				<DirectionsRenderer directions={ props.directionsPath }/>
+			}
 		</GoogleMap>
 	}
 ));

@@ -1,8 +1,30 @@
-
 .image-style {
     height: 80px;
     width: 48%;
     margin-left: 2%;
     margin-bottom: 3px;
     background-color: rgb(231, 231, 231);
+}
+
+.slide-in-animation {
+    transition: 10s;
+    left: 0;
+}
+
+.example-enter {
+    opacity: 0.01;
+}
+
+.example-enter.example-enter-active {
+    opacity: 1;
+    transition: opacity 10000ms ease-in;
+}
+
+.example-leave {
+    opacity: 1;
+}
+
+.example-leave.example-leave-active {
+    opacity: 0.01;
+    transition: opacity 10000ms ease-in;
 }

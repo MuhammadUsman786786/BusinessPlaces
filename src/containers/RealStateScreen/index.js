@@ -1,14 +1,18 @@
-import React, {Component} from 'react'
-import CustomMap from "../../components/GoogleMap";
-import {API_RESPONSE, API_RESPONSE_1, MAP_CENTER, TEST_IMAGE_URL} from "../../utilities/Constants";
-import {withStyles} from '@material-ui/core/styles';
-import {LocationSearchInput, SettingDialog} from "../../components";
-import {navigateMap} from "../../utilities/MapUtils";
-import {toast} from "react-toastify";
-import * as _ from 'lodash'
-import {getDirections, searchGoogleMapNearbyPlaces} from "../../utilities/ApiCaller";
-import Typography from "@material-ui/core/Typography";
 import './index.css'
+import * as _ from 'lodash'
+import React, {Component} from 'react'
+import {toast} from "react-toastify";
+import CustomMap from "../../components/GoogleMap";
+import {withStyles} from '@material-ui/core/styles';
+import {navigateMap} from "../../utilities/MapUtils";
+import {API_RESPONSE, API_RESPONSE_1, MAP_CENTER, PLACE_DETAILS} from "../../utilities/Constants";
+import Typography from "@material-ui/core/Typography";
+import {LocationSearchInput, SettingDialog} from "../../components";
+import {getDirections, getPlaceDetails, searchGoogleMapNearbyPlaces} from "../../utilities/ApiCaller";
+import ReviewsList from "../../components/ReviewList";
+import Rating from "react-star-rating-component";
+import {findAllInRenderedTree} from "react-dom/test-utils";
+import {Link} from "react-router-dom";
 
 const styles = ((theme) => ({
 	root: {
@@ -35,20 +39,21 @@ const HOTELS_KEYS = [ 'restaurant' ];
 const INITIAL_STATE = {
 	selectedPlaceId: '',
 	destinationId: '',
-	directionsPath: []
+	directionsPath: [],
+	destinationPlaceInfo: {},
+	isDestinationPlaceInfo: true,
 }
 
 class RealStateScreen extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			dataList: [],
-			dataList1: [],
+			dataList: API_RESPONSE,
+			dataList1: API_RESPONSE_1,
 			mapCenter: MAP_CENTER,
-			businessType: '',
+			businessType: [ {title: 'bank'} ],
 			radius: 1500,
-			selectedPlaceId: '',
-			destinationId: '',
+			...INITIAL_STATE
 		};
 		this.mapRef = null
 	}
@@ -64,14 +69,14 @@ class RealStateScreen extends Component {
 			businessType = _.map(businessType, (item) => item.title);
 			const selectedPlaces = await searchGoogleMapNearbyPlaces({mapCenter, businessType, radius});
 			const hostelsList = await searchGoogleMapNearbyPlaces({mapCenter, businessType: HOTELS_KEYS, radius});
-			this.props.setImagesList([...selectedPlaces,...hostelsList])
+			this.props.setImagesList([ ...selectedPlaces, ...hostelsList ])
 			this.setState({dataList: selectedPlaces, dataList1: hostelsList,})
 		} catch (e) {
 		}
 	};
 	
 	searchHandler = () => {
-		const {closeModal,setHoverPlaceId} = this.props;
+		const {closeModal, setHoverPlaceId} = this.props;
 		const {businessType} = this.state;
 		if (_.isEmpty(businessType)) {
 			return toast.error('Business Type is required')
@@ -93,7 +98,7 @@ class RealStateScreen extends Component {
 			return []
 		}
 		const directionsPointList = [];
-		const mergedDataMap = _.keyBy([ ...dataList, ...dataList1 ], 'id');
+		const mergedDataMap = _.keyBy([ ...dataList, ...dataList1 ], 'place_id');
 		const sourceItem = mergedDataMap[selectedPlaceId];
 		const destinationItem = mergedDataMap[destinationId];
 		
@@ -113,28 +118,70 @@ class RealStateScreen extends Component {
 		return directionsPointList
 	};
 	
-	renderImages = () => {
-		const {dataList = [], dataList1 = []} = this.state;
-		return <div className='d-flex flex-wrap' style={ {width: '25%', height: '517px', overflow: 'scroll'} }>
-		</div>
+	getDirectionsHandler = async () => {
+		const {destinationId} = this.state
+		const directionsPath = await getDirections(this.getDirectionsList())
+		let destinationPlaceInfo = {}
+		if (!_.isEmpty(destinationId)) {
+			destinationPlaceInfo = await getPlaceDetails({mapCenter: this.state.mapCenter, placeId: destinationId})
+		}
+		this.setState({directionsPath, destinationPlaceInfo, isDestinationPlaceInfo: true})
 	}
 	
-	getDirectionsHandler = async () => {
-		const directionsPath = await getDirections(this.getDirectionsList())
-		this.setState({directionsPath})
-	}
 	componentWillUnmount() {
 		this.props.setImagesList([])
 	}
 	
+	renderPlaceInfo = () => {
+		const {destinationPlaceInfo = {}} = this.state
+		const {
+			formatted_address,
+			name,
+			rating,
+			photos,
+			reviews,
+			url
+		} = destinationPlaceInfo || {}
+		return <div style={ {width: '25%', height: '517px', overflow: 'scroll'} } className='px-1'>
+			<button
+				onClick={ () => {
+					this.setState({isDestinationPlaceInfo: false})
+				} }
+				className='btn btn-outline-info btn-sm mb-2 mt-2'>
+				{ `< Back` }
+			</button>
+			{ !_.isEmpty(destinationPlaceInfo) && <div>
+				<Link to={ {pathname: url} } target="_blank">
+					<p className='font-weight-bold text-dark'>{ formatted_address }</p>
+				</Link>
+				<div className='d-flex'>
+					<span className='d-inline-block mr-2'>{ rating }</span>
+					<Rating value={ rating } editing={ false }/>
+					<span className='d-inline-block ml-2'>({ _.size(reviews) })</span>
+				</div>
+				<p className='text-dark'>{ name }</p>
+				<div className='d-flex flex-wrap'>
+					{ _.map(photos, (item) => {
+						const imageUrl = typeof item.getUrl === "function" ? item.getUrl() : ''
+						return <div style={ {width: '48%', height: 100, marginLeft: '2%'} } className='mb-1'>
+							<img src={ imageUrl } style={ {width: '100%', height: '100%', objectFit: 'cover', borderRadius: 4} }/>
+						</div>
+					}) }
+				</div>
+				<ReviewsList reviews={ reviews }/>
+			</div>
+			}
+		</div>
+	}
+	
 	render() {
 		const {isModal, closeModal} = this.props;
-		const directionsList = this.getDirectionsList();
+		const {isDestinationPlaceInfo} = this.state
 		return (
 			<div className='flex h-100 position-relative'>
 				<div className='d-flex' style={ {height: '70%'} }>
-					{/*{ this.renderImages() }*/}
-					<div style={ {width: '100%'} }>
+					{ isDestinationPlaceInfo && this.renderPlaceInfo() }
+					<div style={ {width: isDestinationPlaceInfo ? '75%' : '100%'} }>
 						<CustomMap
 							getMapRef={ (ref) => (this.mapRef = ref) }
 							dataList={ this.state.dataList }
@@ -146,12 +193,12 @@ class RealStateScreen extends Component {
 							directionsPath={ this.state.directionsPath }
 							onMarkerClickHandler={ (item) => {
 								if (!_.isEmpty(this.state.selectedPlaceId)) {
-									this.setState({destinationId: item.id}, this.getDirectionsHandler)
+									this.setState({destinationId: item.place_id}, this.getDirectionsHandler)
 								}
 							} }
 							onMarkerClickHandler1={ (item) => {
 								const {destinationId} = this.state
-								this.setState({selectedPlaceId: item.id}, () => {
+								this.setState({selectedPlaceId: item.place_id}, () => {
 									if (!_.isEmpty(destinationId)) {
 										this.getDirectionsHandler()
 									}
