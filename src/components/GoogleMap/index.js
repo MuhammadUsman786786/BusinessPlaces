@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 import React, {Component} from 'react'
-import {Circle, GoogleMap, InfoWindow, Marker, withGoogleMap, withScriptjs} from "react-google-maps"
+import {Circle, DirectionsRenderer, GoogleMap, InfoWindow, Marker, withGoogleMap, withScriptjs} from "react-google-maps"
 import * as _ from 'lodash'
 import {Link} from 'react-router-dom'
 import {MAP_CENTER, MARKER_ICONS, PLACE_API_KEY} from "../../utilities/Constants";
@@ -123,9 +123,7 @@ const MyMapComponent = withScriptjs(withGoogleMap((props) => {
 				radius={ radius }
 				options={ {strokeColor: "#ff0000"} }
 			/> }
-			<Directions
-				travelMode={ google.maps.TravelMode.WALKING }
-				places={ props.directionsList }/>
+			<DirectionsRenderer directions={ props.directionsPath}/>
 		</GoogleMap>
 	}
 ));

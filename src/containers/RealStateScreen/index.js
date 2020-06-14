@@ -6,7 +6,7 @@ import {LocationSearchInput, SettingDialog} from "../../components";
 import {navigateMap} from "../../utilities/MapUtils";
 import {toast} from "react-toastify";
 import * as _ from 'lodash'
-import {searchGoogleMapNearbyPlaces} from "../../utilities/ApiCaller";
+import {getDirections, searchGoogleMapNearbyPlaces} from "../../utilities/ApiCaller";
 import Typography from "@material-ui/core/Typography";
 import './index.css'
 
@@ -32,6 +32,12 @@ const styles = ((theme) => ({
 
 const HOTELS_KEYS = [ 'restaurant' ];
 
+const INITIAL_STATE = {
+	selectedPlaceId: '',
+	destinationId: '',
+	directionsPath: []
+}
+
 class RealStateScreen extends Component {
 	constructor(props) {
 		super(props);
@@ -41,7 +47,6 @@ class RealStateScreen extends Component {
 			mapCenter: MAP_CENTER,
 			businessType: '',
 			radius: 1500,
-			hoverPlaceId: '',
 			selectedPlaceId: '',
 			destinationId: '',
 		};
@@ -59,25 +64,26 @@ class RealStateScreen extends Component {
 			businessType = _.map(businessType, (item) => item.title);
 			const selectedPlaces = await searchGoogleMapNearbyPlaces({mapCenter, businessType, radius});
 			const hostelsList = await searchGoogleMapNearbyPlaces({mapCenter, businessType: HOTELS_KEYS, radius});
-			this.setState({
-				dataList: selectedPlaces,
-				dataList1: hostelsList,
-				hoverPlaceId: '',
-				selectedPlaceId: '',
-				destinationId: ''
-			})
+			this.props.setImagesList([...selectedPlaces,...hostelsList])
+			this.setState({dataList: selectedPlaces, dataList1: hostelsList,})
 		} catch (e) {
 		}
 	};
 	
 	searchHandler = () => {
-		const {closeModal} = this.props;
+		const {closeModal,setHoverPlaceId} = this.props;
 		const {businessType} = this.state;
 		if (_.isEmpty(businessType)) {
 			return toast.error('Business Type is required')
 		}
-		this.setState({dataList: [], dataList1: []});
+		this.setState({
+			dataList: [],
+			dataList1: [],
+			...INITIAL_STATE
+		});
 		closeModal();
+		this.props.setImagesList([])
+		setHoverPlaceId('')
 		this.fetchDataHandler()
 	};
 	
@@ -107,63 +113,49 @@ class RealStateScreen extends Component {
 		return directionsPointList
 	};
 	
-	renderImages =()=>{
+	renderImages = () => {
 		const {dataList = [], dataList1 = []} = this.state;
-		const mergedDataList=[...dataList, ...dataList1 ]
-		if(_.isEmpty(mergedDataList)){
-			return <h6 className='pt-3 text-center w-25'>No Place is found</h6>
-		}
 		return <div className='d-flex flex-wrap' style={ {width: '25%', height: '517px', overflow: 'scroll'} }>
-			{ _.map(mergedDataList, (item) => {
-				const {photos} = item || {};
-				// eslint-disable-next-line no-unused-vars
-				let imageUrl = null;
-				if (typeof _.get(photos, '[0].getUrl') === "function") {
-					imageUrl = photos[0].getUrl()
-				}
-				return <div
-					className='image-style'
-					onMouseOver={ () => {
-						this.setState({hoverPlaceId: item.id})
-					} }
-					onMouseLeave={ () => {
-						this.setState({hoverPlaceId: ''})
-					} }
-				>
-					<img
-						style={ {width: '100%', height: '100%', objectFit: 'cover', borderRadius: 4} }
-						src={ imageUrl }/>
-				</div>
-			})
-			}
 		</div>
+	}
+	
+	getDirectionsHandler = async () => {
+		const directionsPath = await getDirections(this.getDirectionsList())
+		this.setState({directionsPath})
+	}
+	componentWillUnmount() {
+		this.props.setImagesList([])
 	}
 	
 	render() {
 		const {isModal, closeModal} = this.props;
-		const {dataList = [], dataList1 = []} = this.state;
 		const directionsList = this.getDirectionsList();
 		return (
 			<div className='flex h-100 position-relative'>
 				<div className='d-flex' style={ {height: '70%'} }>
-					{this.renderImages()}
-					<div style={ {width: '75%'} }>
+					{/*{ this.renderImages() }*/}
+					<div style={ {width: '100%'} }>
 						<CustomMap
 							getMapRef={ (ref) => (this.mapRef = ref) }
 							dataList={ this.state.dataList }
 							dataList1={ this.state.dataList1 }
 							radius={ this.state.radius }
 							mapCenter={ this.state.mapCenter }
-							hoverPlaceId={ this.state.hoverPlaceId }
+							hoverPlaceId={ this.props.hoverPlaceId }
 							selectedPlaceId={ this.state.selectedPlaceId }
-							directionsList={ directionsList }
+							directionsPath={ this.state.directionsPath }
 							onMarkerClickHandler={ (item) => {
 								if (!_.isEmpty(this.state.selectedPlaceId)) {
-									this.setState({destinationId: item.id})
+									this.setState({destinationId: item.id}, this.getDirectionsHandler)
 								}
 							} }
 							onMarkerClickHandler1={ (item) => {
-								this.setState({selectedPlaceId: item.id})
+								const {destinationId} = this.state
+								this.setState({selectedPlaceId: item.id}, () => {
+									if (!_.isEmpty(destinationId)) {
+										this.getDirectionsHandler()
+									}
+								})
 							} }
 						/>
 					</div>

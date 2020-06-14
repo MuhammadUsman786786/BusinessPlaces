@@ -50,7 +50,7 @@ export const searchGoogleMapNearbyPlaces = (props) => new Promise((resolve, reje
 		});
 });
 
-export const getDirections = (places, successCallBack) =>new Promise((resolve, reject) => {
+export const getDirections = (places) =>new Promise((resolve, reject) => {
 	if (_.size(places < 2)) {
 		resolve([])
 	}
