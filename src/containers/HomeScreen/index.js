@@ -33,7 +33,7 @@ class HomeScreen extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			dataList: API_RESPONSE,
+			dataList: [],
 			mapCenter: MAP_CENTER,
 			businessStatus: '',
 			businessType: '',

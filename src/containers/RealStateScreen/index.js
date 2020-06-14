@@ -5,13 +5,12 @@ import {toast} from "react-toastify";
 import CustomMap from "../../components/GoogleMap";
 import {withStyles} from '@material-ui/core/styles';
 import {navigateMap} from "../../utilities/MapUtils";
-import {API_RESPONSE, API_RESPONSE_1, MAP_CENTER, PLACE_DETAILS} from "../../utilities/Constants";
+import {API_RESPONSE, API_RESPONSE_1, MAP_CENTER} from "../../utilities/Constants";
 import Typography from "@material-ui/core/Typography";
 import {LocationSearchInput, SettingDialog} from "../../components";
 import {getDirections, getPlaceDetails, searchGoogleMapNearbyPlaces} from "../../utilities/ApiCaller";
 import ReviewsList from "../../components/ReviewList";
 import Rating from "react-star-rating-component";
-import {findAllInRenderedTree} from "react-dom/test-utils";
 import {Link} from "react-router-dom";
 
 const styles = ((theme) => ({
@@ -41,7 +40,7 @@ const INITIAL_STATE = {
 	destinationId: '',
 	directionsPath: [],
 	destinationPlaceInfo: {},
-	isDestinationPlaceInfo: true,
+	isDestinationPlaceInfo: false,
 }
 
 class RealStateScreen extends Component {
@@ -140,7 +139,8 @@ class RealStateScreen extends Component {
 			rating,
 			photos,
 			reviews,
-			url
+			url,
+			types = []
 		} = destinationPlaceInfo || {}
 		return <div style={ {width: '25%', height: '517px', overflow: 'scroll'} } className='px-1'>
 			<button
@@ -160,6 +160,7 @@ class RealStateScreen extends Component {
 					<span className='d-inline-block ml-2'>({ _.size(reviews) })</span>
 				</div>
 				<p className='text-dark'>{ name }</p>
+				<p style={{marginTop:-20}}>{ (types || [])[0] }</p>
 				<div className='d-flex flex-wrap'>
 					{ _.map(photos, (item) => {
 						const imageUrl = typeof item.getUrl === "function" ? item.getUrl() : ''
