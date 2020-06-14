@@ -5,7 +5,7 @@ import {toast} from "react-toastify";
 import CustomMap from "../../components/GoogleMap";
 import {withStyles} from '@material-ui/core/styles';
 import {navigateMap} from "../../utilities/MapUtils";
-import {API_RESPONSE, API_RESPONSE_1, MAP_CENTER} from "../../utilities/Constants";
+import {MAP_CENTER} from "../../utilities/Constants";
 import Typography from "@material-ui/core/Typography";
 import {LocationSearchInput, SettingDialog} from "../../components";
 import {getDirections, getPlaceDetails, searchGoogleMapNearbyPlaces} from "../../utilities/ApiCaller";
@@ -47,10 +47,11 @@ class RealStateScreen extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			dataList: API_RESPONSE,
-			dataList1: API_RESPONSE_1,
+			dataList: [],
+			dataList1: [],
 			mapCenter: MAP_CENTER,
-			businessType: [ {title: 'bank'} ],
+			// businessType: [ {title: 'bank'} ],
+			businessType: [],
 			radius: 1500,
 			...INITIAL_STATE
 		};
@@ -176,7 +177,7 @@ class RealStateScreen extends Component {
 	}
 	
 	renderHeader = () => {
-		return <div className='w-100 h-100'>
+		return <div className='w-100 h-100 pl-3 pt-2'>
 			<p className='text-danger font-weight-bold' style={ {marginBottom: 0} }>info is here</p>
 			<div className='d-flex w-100' style={ {height: '70%'} }>
 				<div style={ {width: 300, height: '100%'} } className='mb-1'>
@@ -184,10 +185,25 @@ class RealStateScreen extends Component {
 					     style={ {width: '100%', height: '100%', objectFit: 'cover', borderRadius: 4} }/>
 				</div>
 				<div className='d-flex justify-content-between w-100 px-3'>
-					<div>
+					<div className='flex-grow-1'>
 						<p className='text-dark font-weight-bold' style={ {marginBottom: 0} }>Single family home</p>
 						<h4 className='text-danger font-weight-bold' style={ {marginBottom: 0} }>Dark Avenue</h4>
 						<p className='text-dark font-weight-bold' style={ {marginBottom: 0} }>South River City Austin</p>
+						<div className='w-50 my-2' style={{backgroundColor:'rgba(0,0,0,0.11)',height:1}}/>
+						<div className='d-flex'>
+							<div className='d-flex align-items-center'>
+								<img src={ require('../../images/bedIcon.png') } style={ {width: 20, height: 20, objectFit: 'contain', borderRadius: 4} }/>
+								<p className='text-dark ml-2 mb-0'>4 Beds</p>
+							</div>
+							<div className='d-flex align-items-center ml-4'>
+								<img src={ require('../../images/bathIcon.png') } style={ {width: 20, height: 20, objectFit: 'contain', borderRadius: 4} }/>
+								<p className='text-dark ml-2 mb-0'>4 Baths</p>
+							</div>
+							<div className='d-flex align-items-center ml-4'>
+								<img src={ require('../../images/areaIcon.png') } style={ {width: 20, height: 20, objectFit: 'contain', borderRadius: 4} }/>
+								<p className='text-dark ml-2 mb-0'>2472 Sqft</p>
+							</div>
+						</div>
 						<h4 className='text-info font-weight-bold' style={ {marginBottom: 0} }>$879,500</h4>
 					</div>
 					<div>
