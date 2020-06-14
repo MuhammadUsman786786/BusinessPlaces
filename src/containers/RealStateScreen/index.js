@@ -160,7 +160,7 @@ class RealStateScreen extends Component {
 					<span className='d-inline-block ml-2'>({ _.size(reviews) })</span>
 				</div>
 				<p className='text-dark'>{ name }</p>
-				<p style={{marginTop:-20}}>{ (types || [])[0] }</p>
+				<p style={ {marginTop: -20} }>{ (types || [])[0] }</p>
 				<div className='d-flex flex-wrap'>
 					{ _.map(photos, (item) => {
 						const imageUrl = typeof item.getUrl === "function" ? item.getUrl() : ''
@@ -175,11 +175,44 @@ class RealStateScreen extends Component {
 		</div>
 	}
 	
+	renderHeader = () => {
+		return <div className='w-100 h-100'>
+			<p className='text-danger font-weight-bold' style={ {marginBottom: 0} }>info is here</p>
+			<div className='d-flex w-100' style={ {height: '70%'} }>
+				<div style={ {width: 300, height: '100%'} } className='mb-1'>
+					<img src={ require('../../images/defaultHotel.jpeg') }
+					     style={ {width: '100%', height: '100%', objectFit: 'cover', borderRadius: 4} }/>
+				</div>
+				<div className='d-flex justify-content-between w-100 px-3'>
+					<div>
+						<p className='text-dark font-weight-bold' style={ {marginBottom: 0} }>Single family home</p>
+						<h4 className='text-danger font-weight-bold' style={ {marginBottom: 0} }>Dark Avenue</h4>
+						<p className='text-dark font-weight-bold' style={ {marginBottom: 0} }>South River City Austin</p>
+						<h4 className='text-info font-weight-bold' style={ {marginBottom: 0} }>$879,500</h4>
+					</div>
+					<div>
+						<div className='d-flex mb-2'>
+							<button className='btn btn-sm  btn-outline-info ml-2 py-3 px-3'>Mon</button>
+							<button className='btn btn-sm btn-outline-info ml-2 py-3 px-3'>Tue</button>
+							<button className='btn btn-sm btn-outline-info ml-2 py-3 px-3'>Wed</button>
+						</div>
+						<div className='d-flex justify-content-center'>
+							<button className='btn btn-info'>Schedule Call</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	}
+	
 	render() {
 		const {isModal, closeModal} = this.props;
 		const {isDestinationPlaceInfo} = this.state
 		return (
 			<div className='flex h-100 position-relative'>
+				<div className='' style={ {height: '30%'} }>
+					{ this.renderHeader() }
+				</div>
 				<div className='d-flex' style={ {height: '70%'} }>
 					{ isDestinationPlaceInfo && this.renderPlaceInfo() }
 					<div style={ {width: isDestinationPlaceInfo ? '75%' : '100%'} }>
