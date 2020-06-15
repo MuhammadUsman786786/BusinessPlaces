@@ -43,7 +43,7 @@ class CustomMarker extends Component {
 		
 		if (place_id === this.props.selectedPlaceId) {
 			scaledSize = new google.maps.Size(50, 50);
-			icon = MARKER_ICONS.GREEN
+			icon = require('../../images/hotelGreenIcon.png')
 		}
 		
 		return (
@@ -96,7 +96,7 @@ const MyMapComponent = withScriptjs(withGoogleMap((props) => {
 					return <CustomMarker
 						item={ item }
 						key={ item.place_id }
-						icon={ MARKER_ICONS.RED }
+						icon={ item.icon }
 						hoverPlaceId={ hoverPlaceId }
 						isMarkerInfoWindowAllowed={ props.isMarkerInfoWindowAllowed }
 						onMarkerClickHandler={ () => {
@@ -110,7 +110,7 @@ const MyMapComponent = withScriptjs(withGoogleMap((props) => {
 					return <CustomMarker
 						item={ item }
 						key={ item.place_id }
-						icon={ MARKER_ICONS.BLUE }
+						icon={ require('../../images/hotelBlackIcon.png') }
 						hoverPlaceId={ hoverPlaceId }
 						selectedPlaceId={ selectedPlaceId }
 						isMarkerInfoWindowAllowed={ props.isMarkerInfoWindowAllowed }

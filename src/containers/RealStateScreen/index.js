@@ -5,7 +5,7 @@ import {toast} from "react-toastify";
 import CustomMap from "../../components/GoogleMap";
 import {withStyles} from '@material-ui/core/styles';
 import {navigateMap} from "../../utilities/MapUtils";
-import {MAP_CENTER} from "../../utilities/Constants";
+import {API_RESPONSE, API_RESPONSE_1, MAP_CENTER} from "../../utilities/Constants";
 import Typography from "@material-ui/core/Typography";
 import {LocationSearchInput, SettingDialog} from "../../components";
 import {getDirections, getPlaceDetails, searchGoogleMapNearbyPlaces} from "../../utilities/ApiCaller";
@@ -47,8 +47,8 @@ class RealStateScreen extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			dataList: [],
-			dataList1: [],
+			dataList: API_RESPONSE,
+			dataList1: API_RESPONSE_1,
 			mapCenter: MAP_CENTER,
 			// businessType: [ {title: 'bank'} ],
 			businessType: [],
@@ -177,6 +177,8 @@ class RealStateScreen extends Component {
 	}
 	
 	renderHeader = () => {
+		const {destinationPlaceInfo}=this.state||{}
+		const {name,vicinity}=destinationPlaceInfo||{}
 		return <div className='w-100 h-100 pl-3 pt-2'>
 			<p className='custom-text-blue font-weight-bold' style={ {marginBottom: 0} }>info is here</p>
 			<div className='d-flex w-100' style={ {height: '70%'} }>
@@ -187,8 +189,8 @@ class RealStateScreen extends Component {
 				<div className='d-flex justify-content-between w-100 px-3'>
 					<div className='flex-grow-1'>
 						<p className='text-dark font-weight-bold' style={ {marginBottom: 0} }>Single family home</p>
-						<h4 className='custom-text-blue font-weight-bold' style={ {marginBottom: 0} }>Dark Avenue</h4>
-						<p className='text-dark font-weight-bold' style={ {marginBottom: 0} }>South River City Austin</p>
+						<h4 className='custom-text-blue font-weight-bold' style={ {marginBottom: 0} }>{name||'Dark Avenue'}</h4>
+						<p className='text-dark font-weight-bold' style={ {marginBottom: 0} }>{vicinity||'South River City Austin'}</p>
 						<div className='w-50 my-2' style={{backgroundColor:'rgba(0,0,0,0.11)',height:1}}/>
 						<div className='d-flex'>
 							<div className='d-flex align-items-center'>
