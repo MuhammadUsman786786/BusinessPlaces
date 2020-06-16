@@ -45,6 +45,9 @@ class CustomMarker extends Component {
 			scaledSize = new google.maps.Size(50, 50);
 			icon = require('../../images/hotelGreenIcon.png')
 		}
+		// if (_.isEmpty(icon)) {
+		// 	icon = MARKER_ICONS.RED
+		// }
 		
 		return (
 			<Marker
@@ -96,7 +99,7 @@ const MyMapComponent = withScriptjs(withGoogleMap((props) => {
 					return <CustomMarker
 						item={ item }
 						key={ item.place_id }
-						icon={ item.icon }
+						icon={ MARKER_ICONS[item.types[0]] }
 						hoverPlaceId={ hoverPlaceId }
 						isMarkerInfoWindowAllowed={ props.isMarkerInfoWindowAllowed }
 						onMarkerClickHandler={ () => {

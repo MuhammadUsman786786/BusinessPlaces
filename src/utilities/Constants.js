@@ -1,122 +1,49 @@
-export const PLACE_API_KEY = 'AIzaSyBjLKP0pJlrIXLDX1XH205-nb2taTONzHQ'
+import * as _ from 'lodash'
+export const PLACE_API_KEY = 'AIzaSyBjLKP0pJlrIXLDX1XH205-nb2taTONzHQ';
 
 // export const MAP_CENTER = {lat: 35.6961865, lng: 139.7934856}
 // export const MAP_CENTER = {lat: 35.6448676, lng: 139.4126225}
-export const MAP_CENTER = {lat: 33.5995994, lng: 73.0490392}
+export const MAP_CENTER = {lat: 33.5995994, lng: 73.0490392};
 
 export const BUSINESS_STATUS_LIST = [
 	{title: 'OPERATIONAL'},
 	{title: 'CLOSED_TEMPORARILY'},
 	{title: 'CLOSED_PERMANENTLY'},
-]
+];
 
 export const MARKER_ICONS = {
 	BLUE: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
 	YELLOW: 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png',
 	GREEN: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
 	RED: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
-}
+	atm: require('../images/atm.png'),
+	bank: require('../images/bank.png'),
+	bakery: require('../images/dessert.png'),
+	church: require('../images/church.png'),
+	gym: require('../images/gym.png'),
+	gas_station: require('../images/gas.png'),
+	hospital: require('../images/medical.png'),
+	park: require('../images/forest.png'),
+	restaurant: require('../images/drink.png'),
+	shopping_mall: require('../images/shoppingMall.png'),
+};
 
 export const PLACE_TYPES_LIST = [
-	{title: 'accounting'},
-	{title: 'airport'},
-	{title: 'amusement_park'},
-	{title: 'aquarium'},
-	{title: 'art_gallery'},
 	{title: 'atm'},
-	{title: 'bakery'},
 	{title: 'bank'},
-	{title: 'bar'},
-	{title: 'beauty_salon'},
-	{title: 'bicycle_store'},
-	{title: 'book_store'},
-	{title: 'bowling_alley'},
-	{title: 'bus_station'},
-	{title: 'cafe'},
-	{title: 'campground'},
-	{title: 'car_dealer'},
-	{title: 'car_rental'},
-	{title: 'car_repair'},
-	{title: 'car_wash'},
-	{title: 'casino'},
-	{title: 'cemetery'},
+	{title: 'bakery'},
 	{title: 'church'},
-	{title: 'city_hall'},
-	{title: 'clothing_store'},
-	{title: 'convenience_store'},
-	{title: 'courthouse'},
-	{title: 'dentist'},
-	{title: 'department_store'},
-	{title: 'doctor'},
-	{title: 'drugstore'},
-	{title: 'electrician'},
-	{title: 'electronics_store'},
-	{title: 'embassy'},
-	{title: 'fire_station'},
-	{title: 'florist'},
-	{title: 'funeral_home'},
-	{title: 'furniture_store'},
-	{title: 'gas_station'},
 	{title: 'gym'},
-	{title: 'hair_care'},
-	{title: 'hardware_store'},
-	{title: 'hindu_temple'},
-	{title: 'home_goods_store'},
+	{title: 'gas_station'},
 	{title: 'hospital'},
-	{title: 'insurance_agency'},
-	{title: 'jewelry_store'},
-	{title: 'laundry'},
-	{title: 'lawyer'},
-	{title: 'library'},
-	{title: 'light_rail_station'},
-	{title: 'liquor_store'},
-	{title: 'local_government_office'},
-	{title: 'locksmith'},
-	{title: 'lodging'},
-	{title: 'meal_delivery'},
-	{title: 'meal_takeaway'},
-	{title: 'mosque'},
-	{title: 'movie_rental'},
-	{title: 'movie_theater'},
-	{title: 'moving_company'},
-	{title: 'museum'},
-	{title: 'night_club'},
-	{title: 'painter'},
 	{title: 'park'},
-	{title: 'parking'},
-	{title: 'pet_store'},
-	{title: 'pharmacy'},
-	{title: 'physiotherapist'},
-	{title: 'plumber'},
-	{title: 'police'},
-	{title: 'post_office'},
-	{title: 'primary_school'},
-	{title: 'real_estate_agency'},
 	{title: 'restaurant'},
-	{title: 'roofing_contractor'},
-	{title: 'rv_park'},
-	{title: 'school'},
-	{title: 'secondary_school'},
-	{title: 'shoe_store'},
 	{title: 'shopping_mall'},
-	{title: 'spa'},
-	{title: 'stadium'},
-	{title: 'storage'},
-	{title: 'store'},
-	{title: 'subway_station'},
-	{title: 'supermarket'},
-	{title: 'synagogue'},
-	{title: 'taxi_stand'},
-	{title: 'tourist_attraction'},
-	{title: 'train_station'},
-	{title: 'transit_station'},
-	{title: 'travel_agency'},
-	{title: 'university'},
-	{title: 'veterinary_care'},
-	{title: 'zoo'},
-]
+];
 
-export const TEST_IMAGE_URL = 'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__340.jpg'
+const PLACE_LIST_KEYS = _.map(PLACE_TYPES_LIST, ({title}) => title);
+
+export const TEST_IMAGE_URL = 'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__340.jpg';
 export const API_RESPONSE = [
 	{
 		"business_status": "OPERATIONAL",
@@ -548,7 +475,7 @@ export const API_RESPONSE = [
 		"vicinity": "15 Majeed plaza, Bank Road, Rawalpindi",
 		"html_attributions": []
 	},
-]
+];
 
 export const API_RESPONSE_1 = [
 	{
@@ -1059,7 +986,7 @@ export const API_RESPONSE_1 = [
 		"vicinity": "17/22, The Mall, Rawalpindi",
 		"html_attributions": []
 	}
-]
+];
 
 
 export const PLACE_DETAILS = {
@@ -1136,4 +1063,4 @@ export const PLACE_DETAILS = {
 	"url": "https://maps.google.com/?cid=14193809016288688729",
 	"user_ratings_total": 5,
 	"website": "http://www.bok.com.pk/"
-}
+};

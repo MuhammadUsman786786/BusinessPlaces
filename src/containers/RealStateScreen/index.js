@@ -47,8 +47,8 @@ class RealStateScreen extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			dataList: API_RESPONSE,
-			dataList1: API_RESPONSE_1,
+			dataList: [],
+			dataList1: [],
 			mapCenter: MAP_CENTER,
 			// businessType: [ {title: 'bank'} ],
 			businessType: [],

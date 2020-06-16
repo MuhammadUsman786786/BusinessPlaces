@@ -15,6 +15,7 @@ const ImageGrid = (props) => {
 			if (typeof _.get(photos, '[0].getUrl') === "function") {
 				imageUrl = photos[0].getUrl()
 			}
+			console.log({imageUrl})
 			return <div
 				id={item.id}
 				className='image-style'
