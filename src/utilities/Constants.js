@@ -37,7 +37,6 @@ export const PLACE_TYPES_LIST = [
 	{title: 'gas_station'},
 	{title: 'hospital'},
 	{title: 'park'},
-	{title: 'restaurant'},
 	{title: 'shopping_mall'},
 ];
 
