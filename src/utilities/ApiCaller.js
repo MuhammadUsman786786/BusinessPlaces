@@ -8,7 +8,7 @@ export const searchGoogleMapNearbyPlacesWithPagination = (props) => {
 	const service = new google.maps.places.PlacesService(map);
 	let showMessage = true;
 	service.nearbySearch(
-		{location, radius, type: [ businessType ]},
+		{location, radius, keyword: businessType},
 		function (results, status, pagination) {
 			if (status === 'ZERO_RESULTS') {
 				showMessage = false

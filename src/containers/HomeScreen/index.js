@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import CustomMap from "../../components/GoogleMap";
-import {API_RESPONSE, MAP_CENTER} from "../../utilities/Constants";
+import {MAP_CENTER, HOME_PLACE_TYPES} from "../../utilities/Constants";
 import {withStyles} from '@material-ui/core/styles';
 import {LocationSearchInput, SettingDialog} from "../../components";
 import {navigateMap} from "../../utilities/MapUtils";
@@ -109,6 +109,7 @@ class HomeScreen extends Component {
 				<SettingDialog
 					isModal={ isModal }
 					closeModal={ closeModal }
+					businessTypeOptions={HOME_PLACE_TYPES}
 					businessType={ this.state.businessType }
 					businessStatus={ this.state.businessStatus }
 					onSelectBusinessStatus={ this.onSelectBusinessStatus }

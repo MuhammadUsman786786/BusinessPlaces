@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import CustomMap from "../../components/GoogleMap";
 import { withStyles } from '@material-ui/core/styles';
 import { navigateMap } from "../../utilities/MapUtils";
-import { MAP_CENTER } from "../../utilities/Constants";
+import { MAP_CENTER, PLACE_TYPES_LIST } from "../../utilities/Constants";
 import Typography from "@material-ui/core/Typography";
 import { LocationSearchInput, SettingDialog } from "../../components";
 import { getDirections, getPlaceDetails, searchGoogleMapNearbyPlaces } from "../../utilities/ApiCaller";
@@ -183,7 +183,7 @@ class RealStateScreen extends Component {
 		const { name, vicinity } = destinationPlaceInfo || {}
 		const { name: sourceName = '', vicinity: sourceVicinity = '' } = sourcePlaceInfo || {}
 		const { distance: { text: distance = '' } = {}, duration: { text: duration = '' } = {} } = directionsPath?.routes[0]?.legs[0] || {}
-		let commonStyles = { img: { width: '100px', height: '100px', objectFit: 'cover', borderRadius: 4 } }
+		let commonStyles = { img: { width: '60px', height: '60px', objectFit: 'cover', borderRadius: 4 } }
 		return <div className='w-100 h-100 p-2 '>
 			<div className='d-flex w-100 justify-content-between' style={{ height: '100%' }}>
 				<div className="d-flex flex-column w-100">
@@ -277,6 +277,7 @@ class RealStateScreen extends Component {
 				<SettingDialog
 					isModal={isModal}
 					closeModal={closeModal}
+					businessTypeOptions={PLACE_TYPES_LIST}
 					isBusinessStatus={false}
 					isSlider={false}
 					isMultipleBusinessType={true}
