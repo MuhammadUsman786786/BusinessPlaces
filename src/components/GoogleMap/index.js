@@ -83,7 +83,7 @@ class CustomMarker extends Component {
 
 const MyMapComponent = withScriptjs(withGoogleMap((props) => {
 		const {dataList = [], dataList1 = [], mapCenter, radius} = props || {};
-		const {hoverPlaceId, selectedPlaceId} = props || {};
+		const {hoverPlaceId, selectedPlaceId } = props || {};
 		const {
 			onMarkerClickHandler = () => {
 			},

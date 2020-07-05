@@ -7,7 +7,6 @@ export const searchGoogleMapNearbyPlacesWithPagination = (props) => {
 	const map = new google.maps.Map(document.getElementById('map'), {center: location, zoom: 17});
 	const service = new google.maps.places.PlacesService(map);
 	let showMessage = true;
-	
 	service.nearbySearch(
 		{location, radius, type: [ businessType ]},
 		function (results, status, pagination) {
@@ -97,12 +96,10 @@ export const getPlaceDetails = (props) => new Promise((resolve, reject) => {
 		// 	'user_ratings_total'
 		// ]
 	};
-	console.log({request})
 	const service = new google.maps.places.PlacesService(map);
 	service.getDetails(request, function (place, status) {
 		if (status === google.maps.places.PlacesServiceStatus.OK) {
 			resolve(place)
-			console.log({place})
 		}
 		resolve({})
 	});

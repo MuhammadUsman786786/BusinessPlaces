@@ -10,12 +10,10 @@ const ImageGrid = (props) => {
 	return <div className='d-flex flex-wrap' style={ {height: 'calc(100vh - 235px)', overflow: 'scroll',marginRight:4,marginTop:55} }>
 		{ _.map(imagesList, (item) => {
 			const {photos} = item || {};
-			// eslint-disable-next-line no-unused-vars
 			let imageUrl = null;
 			if (typeof _.get(photos, '[0].getUrl') === "function") {
 				imageUrl = photos[0].getUrl()
 			}
-			console.log({imageUrl})
 			return <div
 				id={item.id}
 				className='image-style'
