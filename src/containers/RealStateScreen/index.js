@@ -184,7 +184,7 @@ class RealStateScreen extends Component {
 		const { name: sourceName = '', vicinity: sourceVicinity = '' } = sourcePlaceInfo || {}
 		const { distance: { text: distance = '' } = {}, duration: { text: duration = '' } = {} } = directionsPath?.routes[0]?.legs[0] || {}
 		let commonStyles = { img: { width: '100px', height: '100px', objectFit: 'cover', borderRadius: 4 } }
-		return <div className='w-100 h-100 p-2'>
+		return <div className='w-100 h-100 p-2 '>
 			<div className='d-flex w-100 justify-content-between' style={{ height: '100%' }}>
 				<div className="d-flex flex-column w-100">
 					<div className="d-flex mx-2">
